@@ -264,9 +264,3 @@ roleRef:
   name: pod-reader # must match name of Role | ClusterRole to bind to
   apiGroup: rbac.authorization.k8s.io
 ```
-
-
-```yaml
-some yaml
-```
-
