@@ -346,7 +346,7 @@ data:
 
 ### Secrets 
 https://kubernetes.io/docs/concepts/configuration/secret/  
-Secrets = API object used to store and manage sensitive information, such as passwords, OAuth tokens, and ssh keys
+Secrets = API object used to store and manage sensitive information, such as passwords, OAuth tokens, and SSH keys
 
 ```yaml
 apiVersion: v1
