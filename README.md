@@ -175,9 +175,10 @@ Load Balancer schedules tasks across redundant nodes
 
 
 ## 5. Etcd Backup & Restore
-https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster  
+https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/  
 
 ### Backing up etcd
+
 Basics
 ```
 etcdctl snapshot save <filename>
@@ -197,6 +198,7 @@ ETCDCTL_API=3 etcdctl --write-out=table snapshot status snapshot1
 ```
 
 ### Restoring an etcd backup 
+
 This creates a temporary logical cluster to repopulate data
 
 Basics
@@ -278,4 +280,113 @@ roleRef:
   kind: Role       # Role | ClusterRole
   name: pod-reader # must match name of Role | ClusterRole to bind to
   apiGroup: rbac.authorization.k8s.io
+```
+
+### Service Accounts
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+
+Service Account = account used by container processes within pods to authenticate and control access to K8s APIs
+
+```yaml
+Service Account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: my-sa
+  namespace: custom
+```
+or using imperative command:
+```
+kubectl create sa <sa-name> -n <namespace>
+```
+
+RoleBinding
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sa-read-pods
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: my-sa
+  namespace: custom
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+```
+
+
+## 7. Application Configurations  
+
+### ConfigMaps  
+https://kubernetes.io/docs/concepts/configuration/configmap/  
+ConfigMap = API object used to store non-confidential data in key-value pairs. 
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: game-demo
+data:
+  # property-like keys; each key maps to a simple value
+  player_initial_lives: "3"
+  ui_properties_file_name: "user-interface.properties"
+
+  # file-like keys
+  game.properties: |
+    enemy.types=aliens,monsters
+    player.maximum-lives=5    
+  user-interface.properties: |
+    color.good=purple
+    color.bad=yellow
+    allow.textmode=true  
+```
+
+### Secrets
+https://kubernetes.io/docs/concepts/configuration/secret/
+Secrets = API object used to store and manage sensitive information, such as passwords, OAuth tokens, and ssh keys
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+type: opaque       # opaque = arbitrary user-defined data
+data:
+  secretkey1: <base64-string1>
+```
+Or using the imperative command
+```
+kubectl create secret generic my-secret --from-file=path/to/bar
+```
+
+How to get a base64 key from a string:
+```
+echo -n 'secret' | base64 
+```
+
+### Environment Variables
+https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/  
+
+```yaml
+apiVersion: v1
+kind: Pod
+...
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'echo "configmap: $CONFIGMAPVAR secret: $SECRETVAR"'] 
+    env:
+    - name: CONFIGMAPVAR
+      valueFrom:
+        configMapKeyRef:
+          name: my-configmap
+          key: key1
+    - name: SECRETVAR
+      valueFrom:
+        secretKeyRef:
+          name: my-secret 
+          key: secretkey1
 ```
