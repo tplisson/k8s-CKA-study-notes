@@ -321,7 +321,7 @@ roleRef:
 
 ## 7. Application Configurations  
 
-### ConfigMaps  
+### ConfigMaps 
 https://kubernetes.io/docs/concepts/configuration/configmap/  
 ConfigMap = API object used to store non-confidential data in key-value pairs. 
 ```yaml
@@ -344,8 +344,8 @@ data:
     allow.textmode=true  
 ```
 
-### Secrets
-https://kubernetes.io/docs/concepts/configuration/secret/
+### Secrets 
+https://kubernetes.io/docs/concepts/configuration/secret/  
 Secrets = API object used to store and manage sensitive information, such as passwords, OAuth tokens, and ssh keys
 
 ```yaml
@@ -367,7 +367,7 @@ How to get a base64 key from a string:
 echo -n 'secret' | base64 
 ```
 
-### Environment Variables
+### Environment Variables 
 https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/  
 
 ```yaml
