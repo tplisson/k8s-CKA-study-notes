@@ -2,12 +2,12 @@
 My Certified Kubernetes Associate (CKA) Preparation notes
 
 ## Contents
-[1. CKA Details & Training resources](README.md#1.-CKA-Details-&-Training-resources)  
-[2. K8s Installation](README.md#2.-K8s-Installation)  
-[3. K8s Upgrades](README.md#3.-K8s-Upgrades)  
-[4. K8s High Availability](README.md#4.-K8s-High-Availability)  
-[5. Etcd Backup & Restore](README.md#5.-Etcd-Backup-&-Restore)  
-[6. RBAC](README.md#6.-RBAC-Role-Based-Access-Control)
+[1. CKA Details & Training resources](README.md#1-CKA-Details-&-Training-resources)  
+[2. K8s Installation](README.md#2-K8s-Installation)  
+[3. K8s Upgrades](README.md#3-k8s-upgrades)
+[4. K8s High Availability](README.md#4-K8s-High-Availability)  
+[5. Etcd Backup & Restore](README.md#5-Etcd-Backup-&-Restore)  
+[6. RBAC](README.md#6-RBAC-Role-Based-Access-Control)
 
 
 ## 1. CKA Details & Training resources
@@ -29,7 +29,7 @@ K8s version 1.20 (Jan 22, 2021)
 
 
 ### ACG Training 
-https://learn.acloud.guru/course/certified-kubernetes-administrator/
+https://learn.acloud.guru/course/certified-kubernetes-administrator/  
 by William Boyd
 
 
@@ -63,7 +63,8 @@ Join the Cluster on Worker Nodes
 sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>
 ```
 
-### [Management Tools](https://kubernetes.io/docs/reference/tools/)   
+### Management Tools
+https://kubernetes.io/docs/reference/tools/)  
 
 * [kubectl](https://kubernetes.io/docs/reference/kubectl/)  
   * Main k8s CLI  
@@ -87,7 +88,7 @@ kubectl completion bash
 ```
 
 ## 3. K8s Upgrades 
-https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/ 
+https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/  
 
 ### [Draining a node](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)  
 To remove a node from service for upgrade or maintenance = gracefully terminate / move containers to other nodes
@@ -150,7 +151,7 @@ sudo systemctl restart kubelet
 
 
 ## 4. K8s High Availability 
-https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/ 
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/  
 
 ### Control Plane HA   
 Deploy K8s control plane on multiple nodes & ensure that a single node failure does not impact the cluster’s control plane functions.
@@ -173,7 +174,8 @@ Load Balancer schedules tasks across redundant nodes
   
 
 
-## [5. Etcd Backup & Restore](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster)  
+## 5. Etcd Backup & Restore
+https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster  
 
 ### Backing up etcd
 Basics
@@ -235,7 +237,9 @@ ETCDCTL_API=3 etcdctl get cluster.name \
 ```
 
 
-## [6. RBAC - Role-Based Access Control](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)  
+## 6. RBAC - Role-Based Access Control
+https://kubernetes.io/docs/reference/access-authn-authz/rbac/  
+
 Role-based access control (RBAC) = a method of regulating access to resources based on the roles of individual users 
 
 Objects: 
