@@ -178,7 +178,7 @@ Load Balancer schedules tasks across redundant nodes
 ## 5. Etcd Backup & Restore
 https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/  
 
-### Backing up etcd
+### Backing up Etcd
 
 Basics
 ```
@@ -198,7 +198,7 @@ ETCDCTL_API=3 etcdctl snapshot save snapshot1 \
 ETCDCTL_API=3 etcdctl --write-out=table snapshot status snapshot1
 ```
 
-### Restoring an etcd backup 
+### Restoring an Etcd backup 
 
 This creates a temporary logical cluster to repopulate data
 
