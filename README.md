@@ -14,6 +14,10 @@ My Certified Kubernetes Associate (CKA) Preparation notes
 
 ### [CKA Curriculum](https://www.cncf.io/certification/cka/)  
 
+### CKA Curriculum  
+https://www.cncf.io/certification/cka/  
+
+
 Domain	| Weight
 ------- | -------------
 Cluster Architecture, Installation & Configuration	| 25%
@@ -83,6 +87,8 @@ BASH
 kubectl completion bash
 ```
 
+## 3. K8s Upgrades
+https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
 
 ## [3. K8s Upgrades](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/)  
 
