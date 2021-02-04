@@ -1,5 +1,5 @@
 # Certified-Kubernetes-Associate-Prep
-My Certified Kubernetes Associate (CKA) Preparation notes
+My Certified Kubernetes Associate (CKA) preparation notes.
 
 ## Contents
 [1. CKA Details & Training resources](README.md#1-CKA-Details-&-Training-resources)  
