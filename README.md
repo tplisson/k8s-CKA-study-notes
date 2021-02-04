@@ -8,6 +8,7 @@ My Certified Kubernetes Associate (CKA) Preparation notes
 [4. K8s High Availability](README.md#4-K8s-High-Availability)  
 [5. Etcd Backup & Restore](README.md#5-Etcd-Backup-&-Restore)  
 [6. RBAC](README.md#6-RBAC-Role-Based-Access-Control)
+[7. Application Configurations](README.md#7-Application-Configurations)
 
 
 ## 1. CKA Details & Training resources
