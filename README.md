@@ -12,9 +12,7 @@ My Certified Kubernetes Associate (CKA) Preparation notes
 
 ## 1. CKA Details & Training resources
 
-### [CKA Curriculum](https://www.cncf.io/certification/cka/)  
-
-### CKA Curriculum  
+### CKA Curriculum 
 https://www.cncf.io/certification/cka/  
 
 
@@ -30,7 +28,8 @@ Troubleshooting	| 30%
 K8s version 1.20 (Jan 22, 2021)
 
 
-### [ACG Training](https://learn.acloud.guru/course/certified-kubernetes-administrator/)  
+### ACG Training 
+https://learn.acloud.guru/course/certified-kubernetes-administrator/
 by William Boyd
 
 
@@ -87,10 +86,8 @@ BASH
 kubectl completion bash
 ```
 
-## 3. K8s Upgrades
-https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
-
-## [3. K8s Upgrades](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/)  
+## 3. K8s Upgrades 
+https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/ 
 
 ### [Draining a node](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)  
 To remove a node from service for upgrade or maintenance = gracefully terminate / move containers to other nodes
@@ -152,7 +149,8 @@ sudo systemctl restart kubelet
 ```
 
 
-## 4. [K8s High Availability](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/)
+## 4. K8s High Availability 
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/ 
 
 ### Control Plane HA   
 Deploy K8s control plane on multiple nodes & ensure that a single node failure does not impact the cluster’s control plane functions.
