@@ -855,17 +855,420 @@ https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/
 ### 3.1. Understand host networking configuration on the cluster nodes  
 https://kubernetes.io/docs/concepts/cluster-administration/networking/
 
+Each Pod has its own unique IP address within the cluster 
+>> 1 virtual network allowing by default all pods to communicate with each other
+
 ### 3.2. Understand connectivity between Pods  
+By default, pods are non-isolated; they accept traffic from any source.
+
+#### NetworkPolicy  
+https://kubernetes.io/docs/concepts/services-networking/network-policies/  
+If any networkPolicy selects a Pod, then the Pod is completely isolated and will only be open to traffic allowed by networkPolicy.
+
+* podSelector = which pod to apply the networkPolicy
+* ingress = into the Pod
+* egress = leaving the Pod
+
+##### Default deny all ingress traffic 
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+```
+
+##### Default allow all ingress traffic 
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - {} #<-- means all
+```
+
+##### Sample Network Policy
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: test-network-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      role: db
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - ipBlock:     # or podSelector | namespaceSelector
+        cidr: 172.17.0.0/16
+        except:
+        - 172.17.1.0/24
+    - namespaceSelector:
+        matchLabels:
+          project: myproject
+    - podSelector:
+        matchLabels:
+          role: frontend
+    ports:               # Only this is allowed
+    - protocol: TCP
+      port: 6379
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.0.0.0/24
+    ports:
+    - protocol: TCP
+      port: 597
+```
+
 ### 3.3. Understand ClusterIP, NodePort, LoadBalancer service types and endpoints  
+https://kubernetes.io/docs/concepts/services-networking/service/
+
+Service = expose apps running as a set of Pods 
+Service routing = load balancing from Client to Pods
+Endpoints = Pods servicing the apps
+
+Service Types:
+* ClusterIP = expose apps inside cluster
+* NodePort = expose apps outside cluster
+* LoadBalancer = expose apps outside using external load balancer (eg. AWS ALB…)
+* ExternalName (CKA out of scope)
+
+#### ClusterIP
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-clusterip
+  namespace: default
+spec:
+  type: ClusterIP
+  selector:
+    app: my-deployment
+  ports:
+  - port: 80        # service is listening to this port within cluster
+    protocol: TCP
+    targetPort: 80  # pods are listening to this port
+```
+
+#### NodePort
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-clusterip
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    app: my-deployment
+  ports:
+  - port: 80        # service is listening to this port within cluster
+    protocol: TCP
+    targetPort: 80  # pods are listening to this port
+    nodePort: 30080 # all nodes listening to this port 
+```
+
+#### DNS for Services and Pods   
+https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/
+
+Each Pod automatically gets a DNS name:
+```
+<pod-ip-addr>.<namespace>.pod.cluster.local
+192-168-100-1.default.pod.cluster.local
+```
+
+Each Service automatically gets a DNS name:
+```
+<service-name>.<namespace>.svc.<cluster-domain>
+<service-name>.default.svc.cluster.local
+```
+
+DNS names can be used to access a service from any namespace
+
 ### 3.4. Know how to use Ingress controllers and Ingress resources  
+https://kubernetes.io/docs/concepts/services-networking/ingress/
+https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
+
+Ingress manages external access to the services in a cluster, typically HTTP.
+Ingress may provide load balancing, SSL termination and name-based virtual hosting.
+
+>> requires an Ingress Controller
+>> Routing Rules with a set of Paths, each with a Backend >> Service
+If Service uses a Named Port, then Ingress can refer to the Named Port (‘web’) instead of number (’80’)
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /testpath
+        pathType: Prefix
+        backend:
+          service:
+            name: test
+            port:
+              number: 80
+```
+
 ### 3.5. Know how to configure and use CoreDNS  
+https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/
+
+Check that CoreDNS is running on control plane
+```
+kubectl get deployment kube-dns --n kube-system 
+```
+
+Each Pod automatically gets a DNS name:
+```
+<pod-ip-addr-w-dashes>.<namespace>.pod.cluster.local
+192-168-100-1.default.pod.cluster.local
+```
+
 ### 3.6. Choose an appropriate container network interface plugin  
+https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/
+
+K8s nodes will remain “NotReady” until a network plugin is installed. 
+
+Each CNI plugin has its own implementation and own installation procedure. 
+
+#### Calico
+Installing Calico
+```
+kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
+```
 
 ## 4. Storage 10%  
 ### 4.1. Understand storage classes, persistent volumes  
+
+#### StorageClass object 
+https://kubernetes.io/docs/concepts/storage/storage-classes/
+Defining your class of Storage
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: my-localdisk
+provisioner: kubernetes.io/no-provisioner # <--- no | AWS EBS | AzureFile | CephFS | FS | Local …
+allowVolumeExpansion: true                # <---- a PVC can only expand if this is set to true 
+```
+
+#### Volumes  
+https://kubernetes.io/docs/concepts/storage/volumes/  
+https://kubernetes.io/docs/concepts/storage/persistent-volumes/  
+
+Container File Sytems = ephemeral ! 
+Volumes allow Persistant Storage 
+
+Volume type:
+* emptyDir = dynamically created, useful to share data between containers (ephemeral)
+* hostPath = directory on local node
+* NFS
+* Cloud Storage
+* ConfigMaps & Secrets
+* Simple Directory on K8s node
+
+```yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: host-volume-pod
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'while true; do echo "Success!" >> /output/success.txt; sleep 5; done']
+    volumeMounts:
+    - name: my-volume
+      mountPath: /output
+  volumes:
+  - name: my-volume
+    hostPath:
+      path: /home/cloud_user/
+      type: Directory
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shared-volume-pod
+spec:
+  containers:
+  - name: busybox1
+    image: busybox
+    command: ['sh', '-c', 'while true; do echo "Success!" >> /output/success.txt; sleep 5; done']
+    volumeMounts: 
+    - name: my-volume
+      mountPath: /output
+  - name: busybox2
+    image: busybox
+    command: ['sh', '-c', 'while true; cat /input/success.txt; sleep 5; done']
+    volumeMounts: 
+    - name: my-volume
+      mountPath: /input
+  volumes: 
+  - name: my-volume
+    emptyDir: {}
+```
+
+#### Persistent Volumes  
+https://kubernetes.io/docs/concepts/storage/persistent-volumes/  
+K8s Object (not simply referred to in a Pod Object)
+More advanced form of Volume. Allow to treat Storage as an abstract resource and consume it using Pods.
+
+PersistentVolume (PV) object 
+https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistent-volumes
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-pv
+spec:
+  storageClassName: my-localdisk
+  persistentVolumeReclaimPolicy: Recycle
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /var/output
+
+#persistentVolumeReclaimPolicy = Recycle | Retain | Delete
+
+Types of Persistent Volumes
+Supported PV plugins:
+* awsElasticBlockStore - AWS Elastic Block Store (EBS)
+* azureDisk - Azure Disk
+* azureFile - Azure File
+* cephfs - CephFS volume
+* cinder - Cinder (OpenStack block storage) (deprecated)
+* csi - Container Storage Interface (CSI)
+* fc - Fibre Channel (FC) storage
+* flexVolume - FlexVolume
+* flocker - Flocker storage
+* gcePersistentDisk - GCE Persistent Disk
+* glusterfs - Glusterfs volume
+* hostPath - HostPath volume (for single node testing only; WILL NOT WORK in a multi-node cluster; consider using local volume instead)
+* iscsi - iSCSI (SCSI over IP) storage
+* local - local storage devices mounted on nodes.
+* nfs - Network File System (NFS) storage
+* photonPersistentDisk - Photon controller persistent disk. (This volume type no longer works since the removal of the corresponding cloud provider.)
+* portworxVolume - Portworx volume
+* quobyte - Quobyte volume
+* rbd - Rados Block Device (RBD) volume
+* scaleIO - ScaleIO volume (deprecated)
+* storageos - StorageOS volume
+* vsphereVolume - vSphere VMDK volume
+
+
 ### 4.2. Understand volume mode, access modes and reclaim policies for volumes  
+
+#### volume mode  
+There are two ways PVs may be provisioned: statically or dynamically.
+
+#### Access mode   
+https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes
+
+The access modes are:
+* ReadWriteOnce -- the volume can be mounted as read-write by a single node
+* ReadOnlyMany -- the volume can be mounted read-only by many nodes
+* ReadWriteMany -- the volume can be mounted as read-write by many nodes
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+spec:
+  accessModes:
+    - ReadWriteOnce
+  ...
+```
+
+In the CLI, the access modes are abbreviated to:
+
+RWO - ReadWriteOnce
+ROX - ReadOnlyMany
+RWX - ReadWriteMany
+
+#### Reclaim Policies   
+https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reclaiming
+
+Reclaim Policies:
+* Recycle 
+* Retain
+* Delete
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+spec:
+  ...
+  persistentVolumeReclaimPolicy: Recycle
+  ...
+```
+
+
 ### 4.3. Understand persistent volume claims primitive  
+https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reserving-a-persistentvolume
+object = user’s request w attributes 
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  storageClassName: my-localdisk
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+```
+
+“Expand” a PVC = edit spec.resource.request.storage attribute of existing PVC
+(must support allowVolumeExpansion = true)
+
+
 ### 4.4 Know how to configure applications with persistent storage   
+
+Using PVC in a Pod
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pv-pod
+spec:
+  containers:
+    - name: busybox
+      image: busybox
+      command: ['sh', '-c', 'echo "Success!" > /output/success.txt']
+      volumeMounts:
+      - name: pv-vol
+        mountPath: "/output"
+  volumes:
+    - name: pv-vol
+      persistentVolumeClaim:
+        claimName: my-pvc
+```
 
 ## 5. Troubleshooting 30%  
 ### 5.1. Evaluate cluster and node logging  
