@@ -35,9 +35,18 @@ by William Boyd
 
 
 
-## 2. K8s Installation  
-[k8s-install-base-docker-kube.sh](https://gist.github.com/tplisson/1bb67b45d4c92d83b22a6d1e20771234)  
-[Centos w kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)  
+## 2. K8s Installation
+[k8s-install-base-docker.sh](https://gist.github.com/tplisson/1bb67b45d4c92d83b22a6d1e20771234)  
+[k8s-install-base-containerd.sh](https://gist.github.com/tplisson/caaf5ce57a95d6b3cd6af3d5b53aa15f)  
+[Centos w kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/) 
+
+### Install Container Runtime
+
+Install Docker Engine
+https://docs.docker.com/engine/install/
+
+Install Containerd
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
 ### [Kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)  
 Kubeadm = Tool to simplify building K8s clusters
@@ -47,6 +56,7 @@ Basics:
 kubeadm init 
 kubeadm join
 kubeadm token create --print-join-command
+kubeadm reset
 ```
 
 Initialize K8s on the Control Plane
