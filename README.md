@@ -1,8 +1,9 @@
 # Certified-Kubernetes-Associate-Prep
 My Certified Kubernetes Associate (CKA) preparation notes.
 
-## Contents
-[1. CKA Details & Training resources](README.md#1-CKA-Details-&-Training-resources)  
+### Table of Contents
+[0. CKA Details & Training resources](README.md#0-CKA-Details-&-Training-resources)  
+[1. Cluster Architecture, Installation & Configuration 25%](README.md#1-Cluster-Architecture,-Installation-&-Configuration-25%)  
 [2. K8s Installation](README.md#2-K8s-Installation)  
 [3. K8s Upgrades](README.md#3-k8s-upgrades)  
 [4. K8s High Availability](README.md#4-K8s-High-Availability)  
@@ -11,7 +12,7 @@ My Certified Kubernetes Associate (CKA) preparation notes.
 [7. Application Configurations](README.md#7-Application-Configurations)  
 
 
-## 1. CKA Details & Training resources
+## 0. CKA Details & Training resources
 
 ### CKA Curriculum 
 https://www.cncf.io/certification/cka/  
@@ -19,11 +20,20 @@ https://www.cncf.io/certification/cka/
 
 Domain	| Weight
 ------- | -------------
-Cluster Architecture, Installation & Configuration	| 25%
-Workloads & Scheduling	| 15%
-Services & Networking	| 20%
-Storage	| 10%
-Troubleshooting	| 30%
+1. Cluster Architecture, Installation & Configuration	| 25%
+2. Workloads & Scheduling	| 15%
+3. Services & Networking	| 20%
+4. Storage	| 10%
+5. Troubleshooting	| 30%
+
+[1. Cluster Architecture, Installation & Configuration](README.md#1-Cluster-Architecture,-Installation-&-Configuration-25%)	| 25%
+[1.1. Manage role based access control (RBAC)](README.md#1-1-Manage-Role-Based-Access-Control-(RBAC)) |
+1.2. Use Kubeadm to install a basic cluster |
+1.3. Manage a highly-available Kubernetes cluster |
+1.4. Provision underlying infrastructure to deploy a Kubernetes cluster |
+1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm |
+1.6. Implement etcd backup and restore |
+2. Workloads & Scheduling	| 15%
 
 2Hrs | Cost $300 | Online Exam
 K8s version 1.20 (Jan 22, 2021)
@@ -34,21 +44,89 @@ https://learn.acloud.guru/course/certified-kubernetes-administrator/
 by William Boyd
 
 
+## 1. Cluster Architecture, Installation & Configuration 25%
 
-## 2. K8s Installation
-[k8s-install-base-docker.sh](https://gist.github.com/tplisson/1bb67b45d4c92d83b22a6d1e20771234)  
-[k8s-install-base-containerd.sh](https://gist.github.com/tplisson/caaf5ce57a95d6b3cd6af3d5b53aa15f) 
-[Centos w kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/) 
+### 1.1. Manage Role-Based Access Control (RBAC)  
+https://kubernetes.io/docs/reference/access-authn-authz/rbac/  
 
-### Install Container Runtime
+Role-based access control (RBAC) = a method of regulating access to resources based on the roles of individual users 
 
-Install Docker Engine  
-https://docs.docker.com/engine/install/
+Objects: 
+* **Role** (what permissions) <— **RoleBinding** (which users)  
+    * in namespace  
+* **ClusterRole** <— **ClusterRoleBinding**  
+    * in whole cluster  
 
-Install Containerd  
-https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+#### Role
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: pod-reader
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+```
 
-### [Kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)  
+#### RoleBinding
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods
+  namespace: default
+subjects:
+# You can specify more than one "subject"
+- kind: User
+  name: jane # "name" is case sensitive
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  # "roleRef" specifies the binding to a Role | ClusterRole
+  kind: Role       # Role | ClusterRole
+  name: pod-reader # must match name of Role | ClusterRole to bind to
+  apiGroup: rbac.authorization.k8s.io
+```
+
+#### Service Accounts
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+
+Service Account = account used by container processes within pods to authenticate and control access to K8s APIs
+
+```yaml
+Service Account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: my-sa
+  namespace: custom
+```
+or using imperative command:
+```
+kubectl create sa <sa-name> -n <namespace>
+```
+
+RoleBinding
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sa-read-pods
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: my-sa
+  namespace: custom
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+```
+
+### 1.2. Use Kubeadm to install a basic cluster
+
+#### [Kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)  
 Kubeadm = Tool to simplify building K8s clusters
 
 Basics:
@@ -74,7 +152,45 @@ Join the Cluster on Worker Nodes
 sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>
 ```
 
-### Management Tools
+### 1.3. Manage a highly-available Kubernetes cluster  
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/  
+
+#### Control Plane HA   
+Deploy K8s control plane on multiple nodes & ensure that a single node failure does not impact the cluster’s control plane functions.
+
+node1: kube-api-server	
+node2: kube-api-server
+node3: kube-api-server
+node4: kubelet
+node5: kubelet
+...
+
+Load Balancer schedules tasks across redundant nodes 
+
+#### Etcd Data Store  
+
+- Stacked Etcd  
+  - Etcd runs on each control plane nodes  
+- External Etcd  
+  - Etcd does not run on control plane nodes but on external nodes  
+  
+
+### 1.4. Provision underlying infrastructure to deploy a Kubernetes cluster
+
+#### K8s Installation
+[k8s-install-base-docker.sh](https://gist.github.com/tplisson/1bb67b45d4c92d83b22a6d1e20771234)  
+[k8s-install-base-containerd.sh](https://gist.github.com/tplisson/caaf5ce57a95d6b3cd6af3d5b53aa15f) 
+[Centos w kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/) 
+
+#### Install Container Runtime
+Install Docker Engine  
+https://docs.docker.com/engine/install/
+
+Install Containerd  
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
+
+#### Management Tools
 https://kubernetes.io/docs/reference/tools/)  
 
 * [kubectl](https://kubernetes.io/docs/reference/kubectl/)  
@@ -91,17 +207,16 @@ https://kubernetes.io/docs/reference/tools/)
   * Config managment tool (similar to helm)  
   * https://kubernetes.io/blog/2018/05/29/introducing-kustomize-template-free-configuration-customization-for-kubernetes/  
 
-
-### Kubectl autocomplete 
+#### Kubectl autocomplete 
 BASH
 ```
 kubectl completion bash
 ```
 
-## 3. K8s Upgrades 
+### 1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm 
 https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/  
 
-### [Draining a node](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)  
+#### [Draining a node](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)  
 To remove a node from service for upgrade or maintenance = gracefully terminate / move containers to other nodes
 
 Drain a node
@@ -115,7 +230,7 @@ After maintenance, allow pods to run on the node
 kubectl uncordon <node-name>
 ```
 
-### Control Plane Nodes Upgrade
+#### Control Plane Nodes Upgrade
 
 Upgrade Kubeadm to 1.20.2
 ```
@@ -139,7 +254,7 @@ sudo systemctl daemon-reload && \
 sudo systemctl restart kubelet
 ```
 
-### Worker Nodes Upgrades
+#### Worker Nodes Upgrades
 
 Upgrade Kubeadm to 1.20.2
 ```
@@ -160,35 +275,10 @@ sudo systemctl daemon-reload && \
 sudo systemctl restart kubelet
 ```
 
-
-## 4. K8s High Availability 
-https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/  
-
-### Control Plane HA   
-Deploy K8s control plane on multiple nodes & ensure that a single node failure does not impact the cluster’s control plane functions.
-
-node1: kube-api-server	
-node2: kube-api-server
-node3: kube-api-server
-node4: kubelet
-node5: kubelet
-...
-
-Load Balancer schedules tasks across redundant nodes 
-
-### Etcd Data Store  
-
-- Stacked Etcd  
-  - Etcd runs on each control plane nodes  
-- External Etcd  
-  - Etcd does not run on control plane nodes but on external nodes  
-  
-
-
-## 5. Etcd Backup & Restore
+### 1.6. Implement Etcd backup and restore 
 https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/  
 
-### Backing up Etcd
+#### Backing up Etcd
 
 Basics
 ```
@@ -208,7 +298,7 @@ ETCDCTL_API=3 etcdctl snapshot save snapshot1 \
 ETCDCTL_API=3 etcdctl --write-out=table snapshot status snapshot1
 ```
 
-### Restoring an Etcd backup 
+#### Restoring an Etcd backup 
 
 This creates a temporary logical cluster to repopulate data
 
@@ -250,88 +340,115 @@ ETCDCTL_API=3 etcdctl get cluster.name \
 ```
 
 
-## 6. RBAC - Role-Based Access Control
-https://kubernetes.io/docs/reference/access-authn-authz/rbac/  
+## 2. Workloads & Scheduling 15%
 
-Role-based access control (RBAC) = a method of regulating access to resources based on the roles of individual users 
+### 2.1. Understand deployments and how to perform rolling update and rollbacks  
+https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/
 
-Objects: 
-* **Role** (what permissions) <— **RoleBinding** (which users)  
-    * in namespace  
-* **ClusterRole** <— **ClusterRoleBinding**  
-    * in whole cluster  
-
-### Role
-```yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  namespace: default
-  name: pod-reader
-rules:
-- apiGroups: [""] # "" indicates the core API group
-  resources: ["pods"]
-  verbs: ["get", "watch", "list"]
-```
-
-### RoleBinding
-```yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: read-pods
-  namespace: default
-subjects:
-# You can specify more than one "subject"
-- kind: User
-  name: jane # "name" is case sensitive
-  apiGroup: rbac.authorization.k8s.io
-roleRef:
-  # "roleRef" specifies the binding to a Role | ClusterRole
-  kind: Role       # Role | ClusterRole
-  name: pod-reader # must match name of Role | ClusterRole to bind to
-  apiGroup: rbac.authorization.k8s.io
-```
-
-### Service Accounts
-https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
-
-Service Account = account used by container processes within pods to authenticate and control access to K8s APIs
+#### Deployments  
+https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+* Scaling up / down easily number of replicas
+* Rolling updates to deploy new SW version
 
 ```yaml
-Service Account
-apiVersion: v1
-kind: ServiceAccount
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: my-sa
-  namespace: custom
-```
-or using imperative command:
-```
-kubectl create sa <sa-name> -n <namespace>
-```
-
-RoleBinding
-```yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: sa-read-pods
-  namespace: default
-subjects:
-- kind: ServiceAccount
-  name: my-sa
-  namespace: custom
-roleRef:
-  kind: Role
-  name: pod-reader
-  apiGroup: rbac.authorization.k8s.io
+  name: my-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-deployment
+  template:
+    metadata:
+      labels:
+        app: my-deployment
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.19.1
+        ports:
+        - containerPort: 80
 ```
 
+#### Scaling  
+https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#scaling-a-deployment
 
-## 7. Application Configurations  
+1- Using imperative command “kubectl scale”
+```
+kubectl scale deployment.v1.apps/my-deployment --replicas=5
+```
 
-### ConfigMaps 
+2- Using imperative command “kubectl edit deploy”
+```
+kubectl edit deployment my-deployment
+```
+change is applied immediately, no need for kubectl apply
+
+3- Editing replicas number in the deployment YAML manifest 
+```
+kubectl apply -f deployment.yaml
+```
+
+#### Rolling Updates  
+https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#updating-a-deployment
+
+1- Using imperative command “kubectl set image”
+Use —record to easily rollback
+```
+kubectl set image deployment/my-deployment nginx=nginx:1.19.2 --record
+```
+
+Check status
+```
+kubectl rollout status deployment my-deployment
+kubectl rollout status deployment/my-deployment
+```
+
+2- Using imperative command “kubectl edit deploy”
+```
+kubectl edit deployment my-deployment
+```
+Change is applied immediately, no need for kubectl apply
+
+3- Editing specs in the deployment YAML manifest 
+```
+kubectl apply -f deployment.yaml
+```
+
+
+#### Rollback  
+https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-back-a-deployment
+
+1- Using kubectl set image
+```
+kubectl rollout history deployment/my-deployment
+kubectl rollout undo deployment.v1.apps/my-deployment
+kubectl rollout undo deployment.v1.apps/my-deployment --to-revision=1
+```
+Use "--to-revision" when "—-record" was used
+
+Check status
+```
+kubectl rollout status deployment my-deployment
+```
+
+1- Editing specs in the deployment YAML manifest 
+```
+kubectl apply -f deployment.yaml
+```
+
+2- Using kubectl edit
+```
+kubectl rollout status deployment my-deployment
+```
+change is applied immediately, no need for kubectl apply
+
+
+### 2.2. Use ConfigMaps and Secrets to configure applications
+
+#### ConfigMaps 
 https://kubernetes.io/docs/concepts/configuration/configmap/  
 ConfigMap = API object used to store non-confidential data in key-value pairs. 
 ```yaml
@@ -354,7 +471,7 @@ data:
     allow.textmode=true  
 ```
 
-### Secrets 
+#### Secrets 
 https://kubernetes.io/docs/concepts/configuration/secret/  
 Secrets = API object used to store and manage sensitive information, such as passwords, OAuth tokens, and SSH keys
 
@@ -377,7 +494,7 @@ How to get a base64 key from a string:
 echo -n 'secret' | base64 
 ```
 
-### Environment Variables 
+#### Environment Variables 
 https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/  
 
 ```yaml
@@ -401,3 +518,270 @@ spec:
           name: my-secret 
           key: secretkey1
 ```
+
+#### Configuration Volumes  
+https://kubernetes.io/docs/concepts/storage/volumes/
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webserver
+spec:
+  volumes: 
+  - name: config-volume
+    configMap:
+      name: nginx-config
+  - name: htpasswd-volume
+    secret: 
+      secretName: nginx-htpasswd
+  containers:
+  - name: webserver
+    image: nginx:1.19.1
+    ports:
+    - containerPort: 80
+    volumeMounts: 
+    - name: config-volume
+      mountPath: /etc/nginx
+    - name: htpasswd-volume
+      mountPath: /etc/nginx/conf
+
+### 2.3. Know how to scale applications
+### 2.4. Understand the primitives used to create robust, self-healing, application deployments
+### 2.5. Understand how resource limits can affect Pod scheduling 
+### 2.6. Awareness of manifest management and common templating tools 
+
+## 3. Services & Networking 20%
+### 3.1. Understand host networking configuration on the cluster nodes
+### 3.2. Understand connectivity between Pods
+### 3.3. Understand ClusterIP, NodePort, LoadBalancer service types and endpoints 
+### 3.4. Know how to use Ingress controllers and Ingress resources
+### 3.5. Know how to configure and use CoreDNS
+### 3.6. Choose an appropriate container network interface plugin 
+
+## 4. Storage 10%
+### 4.1. Understand storage classes, persistent volumes
+### 4.2. Understand volume mode, access modes and reclaim policies for volumes
+### 4.3. Understand persistent volume claims primitive
+### 4.4 Know how to configure applications with persistent storage 
+
+## 5. Troubleshooting 30%
+### 5.1. Evaluate cluster and node logging
+### 5.2. Understand how to monitor applications 
+### 5.3. Manage container stdout & stderr logs
+### 5.4. Troubleshoot application failure
+### 5.5. Troubleshoot cluster component failure 
+### 5.6 Troubleshoot networking 
+
+
+
+
+
+
+
+
+```
+
+### Resource requests and limits of Pod and Container  
+https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container
+
+Resource Limits
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod 
+spec: 
+  containers:
+  - name: busybox 
+    image: busybox
+    resources:
+      requests:         ## Requests = estimate for scheduling
+        memory: "64Mi"  ## in bytes, 64Mi = 64MiB
+        cpu: "250m"     ## CPU units in 1/1000 of a CPU, 250m = 1/4
+      limits:           ## Limits = enforced limit, stop if exceed
+        memory: "128Mi"
+        cpu: "500m"      
+```
+
+## 8. Container Health
+
+### Pod Lifecycle: Container Probes
+https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+
+#### Liveness Probes
+Whether the container is running
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-pod 
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'while true; do sleep 3600; done'] 
+    livenessProbe: 
+      exec:
+        command: ["echo", "Hello, world!"]
+      initialDelaySeconds: 5  ## Delay before kubelet triggers 1st probe
+      periodSeconds: 5        ## How ofter kubelet performs a liveness probe
+```
+
+#### Startup Probes
+Whether the application within the container is started.
+Useful for Pods that have containers that take a long time to come into service.
+allowing a time longer than the liveness interval would allow.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-pod-http 
+spec: 
+  containers:
+  - name: nginx 
+    image: nginx:1.19.1 
+    startupProbe: 
+      httpGet:
+        path: /
+        port: 80
+      failureThreshold: 30  ## Nb times try before restarting container
+      periodSeconds: 10     ## How ofter kubelet performs a startup probe
+```
+#### Readiness Probes
+Whether a container is ready to start accepting traffic
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: readiness-pod 
+spec: 
+  containers:
+  - name: nginx 
+    image: nginx:1.19.1 
+    readinessProbe: 
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 5  ## Delay before kubelet triggers 1st probe
+      periodSeconds: 5        ## How ofter kubelet performs probe
+```
+
+### Pod Lifecycle: restart policy
+https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy
+
+#### Always
+For containers that should always run
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: always-pod 
+spec:
+  restartPolicy: Always  ## Default (so optional)
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'while true; do sleep 10; done']
+```
+
+#### OnFailure
+Restart ONLY IF the container exits w an error code or determined unhealthy with liveness probe
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: onfailure-pod 
+spec:
+  restartPolicy: OnFailure
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'while true; do sleep 10; done']
+    command: ['sh', '-c', 'bad command that should fail my container']
+```
+
+#### Never
+For containers that should only be run once and never restarted.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: onfailure-pod 
+spec:
+  restartPolicy: Never 
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'while true; do sleep 10; done']
+    command: ['sh', '-c', 'bad command that should fail my container']
+```
+
+## Multi-Container Pods
+https://kubernetes.io/docs/concepts/workloads/pods/#using-pods
+https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/
+https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/
+
+“Cross-container” interaction >> Network & storage
+“Sidecar” = secondary container to the Pod
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar-pod 
+spec:
+  containers:
+  - name: busybox1
+    image: busybox
+    command: ['sh', '-c', 'while true; do echo logs data > /output/output.log; sleep 5; done'] 
+    volumeMounts:
+    - name: sharedvol
+      mountPath: /output
+  - name: sidecar
+    image: busybox
+    command: ['sh', '-c', 'tail -f /input/output.log'] 
+    volumeMounts:
+    - name: sharedvol
+      mountPath: /input
+  volumes:
+  - name: sharedvol 
+    emptyDir: {}
+```
+
+### Init-Container
+https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+
+Specialized containers that run before app containers in a Pod. 
+Each init container must complete successfully before the next one starts.
+If a Pod's init container fails, the kubelet repeatedly restarts that init container until it succeeds.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox:1.28
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+  initContainers:
+  - name: init1
+    image: busybox:1.28
+    command: ['sleep', '10']
+  - name: init2
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup shipping-svc; do echo waiting for shipping-svc; sleep 2; done']
+```
+
