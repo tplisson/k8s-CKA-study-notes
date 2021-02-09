@@ -26,8 +26,10 @@ Domain	| Weight
 4. Storage	| 10%
 5. Troubleshooting	| 30%
 
-[1. Cluster Architecture, Installation & Configuration](README.md#1-Cluster-Architecture,-Installation-&-Configuration-25%)	| 25%
-[1.1. Manage role based access control (RBAC)](README.md#1-1-Manage-Role-Based-Access-Control-(RBAC)) |
+Domain	| Weight
+------- | -------------
+[1. Cluster Architecture, Installation & Configuration](README.md#1-Cluster-Architecture,-Installation-&-Configuration-25%)	| 25%  
+[1.1. Manage role based access control (RBAC)](README.md#1-1-Manage-Role-Based-Access-Control-(RBAC)) |  
 1.2. Use Kubeadm to install a basic cluster |
 1.3. Manage a highly-available Kubernetes cluster |
 1.4. Provision underlying infrastructure to deploy a Kubernetes cluster |
