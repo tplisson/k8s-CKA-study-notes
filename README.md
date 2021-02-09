@@ -742,7 +742,7 @@ spec:
 ### 2.5. Understand how resource limits can affect Pod scheduling   
 https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container
 
-Resource Limits
+#### Resource Limits  
 
 ```yaml
 apiVersion: v1
@@ -762,6 +762,84 @@ spec:
         cpu: "500m"      
 ```
 
+#### K8s Scheduling  
+https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/  
+https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/  
+
+Using nodeName = only run Pod on this specific node
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  nodeName: node1
+```
+
+Using nodeSelector = run Pod on any node with matching label(s)
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  nodeSelector:
+    myLabel1: mustMatchString
+    myLabel2: "true"
+    disk: fast
+```
+
+Label included in Node definition
+```yaml
+apiVersion: v1
+kind: Node
+metadata:
+  labels:
+    disk: fast
+```
+
+#### DaemonSets  
+https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/  
+A DaemonSet ensures that all (or some) Nodes run a copy of a Pod.
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  selector:
+    matchLabels:
+      name: nginx
+  template:
+    metadata:
+      labels:
+        name: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+```
+
+#### Static Pods   
+https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/  
+Pod managed directly by Kubelet, not by K8s API server
+
+Mirror Pod created to represent a Static Pod in the Kuberntes API, allowing you to easily view the Static Pod's status. But no change can be done to them via API. 
+
+Manifest path for static pods on each node under:
+```
+/etc/kubernetes/manifests/
+```
+
 ### 2.6. Awareness of manifest management and common templating tools   
 https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/
 
@@ -774,26 +852,28 @@ https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/
   * https://kubernetes.io/blog/2018/05/29/introducing-kustomize-template-free-configuration-customization-for-kubernetes/ 
 
 ## 3. Services & Networking 20%
-### 3.1. Understand host networking configuration on the cluster nodes
-### 3.2. Understand connectivity between Pods
-### 3.3. Understand ClusterIP, NodePort, LoadBalancer service types and endpoints 
-### 3.4. Know how to use Ingress controllers and Ingress resources
-### 3.5. Know how to configure and use CoreDNS
-### 3.6. Choose an appropriate container network interface plugin 
+### 3.1. Understand host networking configuration on the cluster nodes  
+https://kubernetes.io/docs/concepts/cluster-administration/networking/
 
-## 4. Storage 10%
-### 4.1. Understand storage classes, persistent volumes
-### 4.2. Understand volume mode, access modes and reclaim policies for volumes
-### 4.3. Understand persistent volume claims primitive
-### 4.4 Know how to configure applications with persistent storage 
+### 3.2. Understand connectivity between Pods  
+### 3.3. Understand ClusterIP, NodePort, LoadBalancer service types and endpoints  
+### 3.4. Know how to use Ingress controllers and Ingress resources  
+### 3.5. Know how to configure and use CoreDNS  
+### 3.6. Choose an appropriate container network interface plugin  
 
-## 5. Troubleshooting 30%
-### 5.1. Evaluate cluster and node logging
-### 5.2. Understand how to monitor applications 
-### 5.3. Manage container stdout & stderr logs
-### 5.4. Troubleshoot application failure
-### 5.5. Troubleshoot cluster component failure 
-### 5.6 Troubleshoot networking 
+## 4. Storage 10%  
+### 4.1. Understand storage classes, persistent volumes  
+### 4.2. Understand volume mode, access modes and reclaim policies for volumes  
+### 4.3. Understand persistent volume claims primitive  
+### 4.4 Know how to configure applications with persistent storage   
+
+## 5. Troubleshooting 30%  
+### 5.1. Evaluate cluster and node logging  
+### 5.2. Understand how to monitor applications   
+### 5.3. Manage container stdout & stderr logs  
+### 5.4. Troubleshoot application failure  
+### 5.5. Troubleshoot cluster component failure   
+### 5.6 Troubleshoot networking  
 
 
 
