@@ -42,10 +42,10 @@ by William Boyd
 
 ### Install Container Runtime
 
-Install Docker Engine
+Install Docker Engine  
 https://docs.docker.com/engine/install/
 
-Install Containerd
+Install Containerd  
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
 ### [Kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)  
