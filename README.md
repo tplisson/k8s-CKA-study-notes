@@ -16,6 +16,11 @@ Domain	| Weight
 [2. Workloads & Scheduling](README.md#2-workloads--scheduling-15)	| 15%  
 [2.1. Understand deployments and how to perform rolling update and rollbacks](README.md#21-understand-deployments-and-how-to-perform-rolling-update-and-rollbacks) |  
 [2.2. Use ConfigMaps and Secrets to configure applications](README.md#22-use-configmaps-and-secrets-to-configure-applications) |  
+[2.3. Know how to scale applications](README.md#23-know-how-to-scale-applications) |  
+[2.4. Understand the primitives used to create robust, self-healing, application deployments](README.md#24-understand-the-primitives-used-to-create-robust-self-healing-application-deployments) |  
+[2.5. Understand how resource limits can affect Pod scheduling](README.md#25-understand-how-resource-limits-can-affect-pod-scheduling) |  
+[2.6. Awareness of manifest management and common templating tools](README.md#26-awareness-of-manifest-management-and-common-templating-tools) |  
+
 [3. Services & Networking]() 	| 20%  
 [4. Storage]()	| 10%  
 [5. Troubleshooting]()	| 30%  
@@ -547,7 +552,185 @@ change is applied immediately, no need for kubectl apply
 ```
 kubectl apply -f deployment.yaml
 ```
-### 2.4. Understand the primitives used to create robust, self-healing, application deployments  
+### 2.4. Understand the primitives used to create robust, self-healing, application deployments   
+https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+
+#### Pod Probes  
+##### Liveness Probes  
+Testing whether the container is running
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-pod 
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'while true; do sleep 3600; done'] 
+    livenessProbe: 
+      exec:
+        command: ["echo", "Hello, world!"]
+      initialDelaySeconds: 5  ## Delay before kubelet triggers 1st probe
+      periodSeconds: 5        ## How ofter kubelet performs a liveness probe
+```
+
+##### Startup Probes  
+Testing whether the application within the container is started.
+Useful for Pods that have containers that take a long time to come into service.
+allowing a time longer than the liveness interval would allow.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-pod-http 
+spec: 
+  containers:
+  - name: nginx 
+    image: nginx:1.19.1 
+    startupProbe: 
+      httpGet:
+        path: /
+        port: 80
+      failureThreshold: 30  ## Nb times try before restarting container
+      periodSeconds: 10     ## How ofter kubelet performs a startup probe
+```
+##### Readiness Probes   
+Testing whether a container is ready to start accepting traffic
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: readiness-pod 
+spec: 
+  containers:
+  - name: nginx 
+    image: nginx:1.19.1 
+    readinessProbe: 
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 5  ## Delay before kubelet triggers 1st probe
+      periodSeconds: 5        ## How ofter kubelet performs probe
+```
+
+#### Restart policy  
+https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy
+
+##### Always  
+For containers that should always run
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: always-pod 
+spec:
+  restartPolicy: Always  ## Default (so optional)
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'while true; do sleep 10; done']
+```
+
+##### OnFailure  
+Restart ONLY IF the container exits w an error code or determined unhealthy with liveness probe
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: onfailure-pod 
+spec:
+  restartPolicy: OnFailure
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'while true; do sleep 10; done']
+    command: ['sh', '-c', 'bad command that should fail my container']
+```
+
+##### Never  
+For containers that should only be run once and never restarted.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: onfailure-pod 
+spec:
+  restartPolicy: Never 
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'while true; do sleep 10; done']
+    command: ['sh', '-c', 'bad command that should fail my container']
+```
+
+#### Multi-Container Pods  
+https://kubernetes.io/docs/concepts/workloads/pods/#using-pods
+https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/
+https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/
+
+“Cross-container” interaction >> Network & storage
+“Sidecar” = secondary container to the Pod
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar-pod 
+spec:
+  containers:
+  - name: busybox1
+    image: busybox
+    command: ['sh', '-c', 'while true; do echo logs data > /output/output.log; sleep 5; done'] 
+    volumeMounts:
+    - name: sharedvol
+      mountPath: /output
+  - name: sidecar
+    image: busybox
+    command: ['sh', '-c', 'tail -f /input/output.log'] 
+    volumeMounts:
+    - name: sharedvol
+      mountPath: /input
+  volumes:
+  - name: sharedvol 
+    emptyDir: {}
+```
+
+##### Init-Container  
+https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+
+Specialized containers that run before app containers in a Pod. 
+Each init container must complete successfully before the next one starts.
+If a Pod's init container fails, the kubelet repeatedly restarts that init container until it succeeds.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox:1.28
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+  initContainers:
+  - name: init1
+    image: busybox:1.28
+    command: ['sleep', '10']
+  - name: init2
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup shipping-svc; do echo waiting for shipping-svc; sleep 2; done']
+```
+
 
 ### 2.5. Understand how resource limits can affect Pod scheduling   
 https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container
@@ -573,6 +756,7 @@ spec:
 ```
 
 ### 2.6. Awareness of manifest management and common templating tools   
+https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/
 
 * [helm](https://helm.sh)  
   * Templating (charts) & package mgmt  
@@ -607,189 +791,4 @@ spec:
 
 
 
-
-
-
-
-
-
-## 8. Container Health
-
-### Pod Lifecycle: Container Probes
-https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
-https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-
-#### Liveness Probes
-Whether the container is running
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: liveness-pod 
-spec:
-  containers:
-  - name: busybox
-    image: busybox
-    command: ['sh', '-c', 'while true; do sleep 3600; done'] 
-    livenessProbe: 
-      exec:
-        command: ["echo", "Hello, world!"]
-      initialDelaySeconds: 5  ## Delay before kubelet triggers 1st probe
-      periodSeconds: 5        ## How ofter kubelet performs a liveness probe
-```
-
-#### Startup Probes
-Whether the application within the container is started.
-Useful for Pods that have containers that take a long time to come into service.
-allowing a time longer than the liveness interval would allow.
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: liveness-pod-http 
-spec: 
-  containers:
-  - name: nginx 
-    image: nginx:1.19.1 
-    startupProbe: 
-      httpGet:
-        path: /
-        port: 80
-      failureThreshold: 30  ## Nb times try before restarting container
-      periodSeconds: 10     ## How ofter kubelet performs a startup probe
-```
-#### Readiness Probes
-Whether a container is ready to start accepting traffic
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: readiness-pod 
-spec: 
-  containers:
-  - name: nginx 
-    image: nginx:1.19.1 
-    readinessProbe: 
-      httpGet:
-        path: /
-        port: 80
-      initialDelaySeconds: 5  ## Delay before kubelet triggers 1st probe
-      periodSeconds: 5        ## How ofter kubelet performs probe
-```
-
-### Pod Lifecycle: restart policy
-https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy
-
-#### Always
-For containers that should always run
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: always-pod 
-spec:
-  restartPolicy: Always  ## Default (so optional)
-  containers:
-  - name: busybox
-    image: busybox
-    command: ['sh', '-c', 'while true; do sleep 10; done']
-```
-
-#### OnFailure
-Restart ONLY IF the container exits w an error code or determined unhealthy with liveness probe
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: onfailure-pod 
-spec:
-  restartPolicy: OnFailure
-  containers:
-  - name: busybox
-    image: busybox
-    command: ['sh', '-c', 'while true; do sleep 10; done']
-    command: ['sh', '-c', 'bad command that should fail my container']
-```
-
-#### Never
-For containers that should only be run once and never restarted.
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: onfailure-pod 
-spec:
-  restartPolicy: Never 
-  containers:
-  - name: busybox
-    image: busybox
-    command: ['sh', '-c', 'while true; do sleep 10; done']
-    command: ['sh', '-c', 'bad command that should fail my container']
-```
-
-## Multi-Container Pods
-https://kubernetes.io/docs/concepts/workloads/pods/#using-pods
-https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/
-https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/
-
-“Cross-container” interaction >> Network & storage
-“Sidecar” = secondary container to the Pod
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: sidecar-pod 
-spec:
-  containers:
-  - name: busybox1
-    image: busybox
-    command: ['sh', '-c', 'while true; do echo logs data > /output/output.log; sleep 5; done'] 
-    volumeMounts:
-    - name: sharedvol
-      mountPath: /output
-  - name: sidecar
-    image: busybox
-    command: ['sh', '-c', 'tail -f /input/output.log'] 
-    volumeMounts:
-    - name: sharedvol
-      mountPath: /input
-  volumes:
-  - name: sharedvol 
-    emptyDir: {}
-```
-
-### Init-Container
-https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
-
-Specialized containers that run before app containers in a Pod. 
-Each init container must complete successfully before the next one starts.
-If a Pod's init container fails, the kubelet repeatedly restarts that init container until it succeeds.
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: myapp-pod
-  labels:
-    app: myapp
-spec:
-  containers:
-  - name: myapp-container
-    image: busybox:1.28
-    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
-  initContainers:
-  - name: init1
-    image: busybox:1.28
-    command: ['sleep', '10']
-  - name: init2
-    image: busybox:1.28
-    command: ['sh', '-c', 'until nslookup shipping-svc; do echo waiting for shipping-svc; sleep 2; done']
-```
 
