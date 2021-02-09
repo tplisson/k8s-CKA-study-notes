@@ -1343,13 +1343,86 @@ spec:
 
 
 ## 5. Troubleshooting 30%  
+
 ### 5.1. Evaluate cluster and node logging  
+https://kubernetes.io/docs/tasks/debug-application-cluster/troubleshooting/  
+https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/  
+
+```
+kubectl get nodes
+kubectl describe node <name>
+kubectl cluster-info dump
+```
+
+Deployed with Kubeadm
+```
+kubectl get pods -n kube-system
+kubectl describe pod <name> -n kube-system
+```
+
+Deployed without Kubeadm
+```
+systemctl status kubelet | docker | ...
+systemctl start kubelet
+systemctl enable kubelet
+```
+
+#### Cluster and Node Logs
+https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/#looking-at-logs
+```
+sudo journalctl -u kubelet   ### -u = unit
+sudo journalctl -u docker | containerd
+```
+
+Deployed with Kubeadm
+```
+kubectl logs <pod> -n kube-system
+```
+Deployed without Kubeadm
+```
+/var/log/kube-apiserver.log
+/var/log/kube-scheduler.log
+/var/log/kube-controller-manager.log
+```
+
 ### 5.2. Understand how to monitor applications   
+https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/
+https://kubernetes.io/docs/tasks/debug-application-cluster/debug-running-pod/
+
+```
+kubectl get pods
+kubectl describe pod <name>
+```
+
+CLI commands within a Pod
+```
+kubectl exec <pod> -c <container> -- <command>
+```
+
+verify there are endpoints for a service
+```
+kubectl get endpoints <service>
+```
+
+
 ### 5.3. Manage container stdout & stderr logs  
+
+stdout + stderr streams
+```
+kubectl logs <pod> -c <container> 
+```
+
 ### 5.4. Troubleshoot application failure  
+
 ### 5.5. Troubleshoot cluster component failure   
+
 ### 5.6 Troubleshoot networking  
 
+https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/
+https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/
+
+Netshoot
+https://github.com/nicolaka/netshoot
 
 
 
