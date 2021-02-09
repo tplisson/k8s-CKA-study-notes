@@ -1,9 +1,29 @@
 # Certified-Kubernetes-Associate-Prep
 My Certified Kubernetes Associate (CKA) preparation notes.
 
-### Table of Contents
-[0. CKA Details & Training resources](README.md#0-CKA-Details-&-Training-resources)  
-[1. Cluster Architecture, Installation & Configuration 25%](README.md#1-Cluster-Architecture,-Installation-&-Configuration-25%)  
+#### CKA Curriculum 
+https://www.cncf.io/certification/cka/  
+
+Domain	| Weight
+------- | -------------
+[1. Cluster Architecture, Installation & Configuration](README.md#1-cluster-architecture-installation--configuration-25)	| 25%  
+[1.1. Manage role based access control (RBAC)](README.md#11-manage-role-based-access-control-rbac) |  
+[1.2. Use Kubeadm to install a basic cluster](README.md#11-use-kubeadm-to-install-a-basic-cluster) |  
+[1.3. Manage a highly-available Kubernetes cluster](README.md#13-manage-a-highly-available-kubernetes-cluster) |  
+[1.4. Provision underlying infrastructure to deploy a Kubernetes cluster](README.md#14-provision-underlying-infrastructure-to-deploy-a-kubernetes-cluster) |  
+[1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm](README.md#15-perform-a-version-upgrade-on-a-kubernetes-cluster-using-kubeadm) |  
+[1.6. Implement etcd backup and restore](README.md#16-implement-etcd-backup-and-restore) |  
+[2. Workloads & Scheduling](README.md#2-workloads--scheduling-15)	| 15%  
+[2.1. Understand deployments and how to perform rolling update and rollbacks](README.md#21-understand-deployments-and-how-to-perform-rolling-update-and-rollbacks) |  
+[2.2. Use ConfigMaps and Secrets to configure applications](README.md#22-use-configmaps-and-secrets-to-configure-applications) |  
+[3. Services & Networking]() 	| 20%  
+[4. Storage]()	| 10%  
+[5. Troubleshooting]()	| 30%  
+
+2Hrs | Cost $300 | Online Exam
+K8s version 1.20 (Jan 22, 2021)
+
+[1. Cluster Architecture, Installation & Configuration 25%]()  
 [2. K8s Installation](README.md#2-K8s-Installation)  
 [3. K8s Upgrades](README.md#3-k8s-upgrades)  
 [4. K8s High Availability](README.md#4-K8s-High-Availability)  
@@ -12,36 +32,7 @@ My Certified Kubernetes Associate (CKA) preparation notes.
 [7. Application Configurations](README.md#7-Application-Configurations)  
 
 
-## 0. CKA Details & Training resources
-
-### CKA Curriculum 
-https://www.cncf.io/certification/cka/  
-
-
-Domain	| Weight
-------- | -------------
-1. Cluster Architecture, Installation & Configuration	| 25%
-2. Workloads & Scheduling	| 15%
-3. Services & Networking	| 20%
-4. Storage	| 10%
-5. Troubleshooting	| 30%
-
-Domain	| Weight
-------- | -------------
-[1. Cluster Architecture, Installation & Configuration](README.md#1-Cluster-Architecture,-Installation-&-Configuration-25%)	| 25%  
-[1.1. Manage role based access control (RBAC)](README.md#1-1-Manage-Role-Based-Access-Control-(RBAC)) |  
-1.2. Use Kubeadm to install a basic cluster |
-1.3. Manage a highly-available Kubernetes cluster |
-1.4. Provision underlying infrastructure to deploy a Kubernetes cluster |
-1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm |
-1.6. Implement etcd backup and restore |
-2. Workloads & Scheduling	| 15%
-
-2Hrs | Cost $300 | Online Exam
-K8s version 1.20 (Jan 22, 2021)
-
-
-### ACG Training 
+#### ACG Training 
 https://learn.acloud.guru/course/certified-kubernetes-administrator/  
 by William Boyd
 
@@ -547,6 +538,7 @@ spec:
       mountPath: /etc/nginx
     - name: htpasswd-volume
       mountPath: /etc/nginx/conf
+```
 
 ### 2.3. Know how to scale applications
 ### 2.4. Understand the primitives used to create robust, self-healing, application deployments
