@@ -365,38 +365,17 @@ spec:
         - containerPort: 80
 ```
 
-#### Scaling  
-https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#scaling-a-deployment
 
-1- Using imperative command “kubectl scale”
-```
-kubectl scale deployment.v1.apps/my-deployment --replicas=5
-```
-
-2- Using imperative command “kubectl edit deploy”
-```
-kubectl edit deployment my-deployment
-```
-change is applied immediately, no need for kubectl apply
-
-3- Editing replicas number in the deployment YAML manifest 
-```
-kubectl apply -f deployment.yaml
-```
 
 #### Rolling Updates  
 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#updating-a-deployment
+
+3 options for Rolling Updates
 
 1- Using imperative command “kubectl set image”
 Use —record to easily rollback
 ```
 kubectl set image deployment/my-deployment nginx=nginx:1.19.2 --record
-```
-
-Check status
-```
-kubectl rollout status deployment my-deployment
-kubectl rollout status deployment/my-deployment
 ```
 
 2- Using imperative command “kubectl edit deploy”
@@ -410,9 +389,16 @@ Change is applied immediately, no need for kubectl apply
 kubectl apply -f deployment.yaml
 ```
 
+Check status
+```
+kubectl rollout status deployment my-deployment
+kubectl rollout status deployment/my-deployment
+```
 
 #### Rollback  
 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-back-a-deployment
+
+3 options for Rolling back
 
 1- Using kubectl set image
 ```
@@ -422,21 +408,21 @@ kubectl rollout undo deployment.v1.apps/my-deployment --to-revision=1
 ```
 Use "--to-revision" when "—-record" was used
 
-Check status
-```
-kubectl rollout status deployment my-deployment
-```
-
-1- Editing specs in the deployment YAML manifest 
+2- Editing specs in the deployment YAML manifest 
 ```
 kubectl apply -f deployment.yaml
 ```
 
-2- Using kubectl edit
+3- Using kubectl edit
 ```
 kubectl rollout status deployment my-deployment
 ```
 change is applied immediately, no need for kubectl apply
+
+Check status
+```
+kubectl rollout status deployment my-deployment
+```
 
 
 ### 2.2. Use ConfigMaps and Secrets to configure applications
@@ -477,6 +463,7 @@ type: opaque       # opaque = arbitrary user-defined data
 data:
   secretkey1: <base64-string1>
 ```
+
 Or using the imperative command
 ```
 kubectl create secret generic my-secret --from-file=path/to/bar
@@ -540,10 +527,60 @@ spec:
       mountPath: /etc/nginx/conf
 ```
 
-### 2.3. Know how to scale applications
-### 2.4. Understand the primitives used to create robust, self-healing, application deployments
-### 2.5. Understand how resource limits can affect Pod scheduling 
-### 2.6. Awareness of manifest management and common templating tools 
+### 2.3. Know how to scale applications  
+https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#scaling-a-deployment
+
+3 options for Scaling
+
+1- Using imperative command “kubectl scale”
+```
+kubectl scale deployment.v1.apps/my-deployment --replicas=5
+```
+
+2- Using imperative command “kubectl edit deploy”
+```
+kubectl edit deployment my-deployment
+```
+change is applied immediately, no need for kubectl apply
+
+3- Editing replicas number in the deployment YAML manifest 
+```
+kubectl apply -f deployment.yaml
+```
+### 2.4. Understand the primitives used to create robust, self-healing, application deployments  
+
+### 2.5. Understand how resource limits can affect Pod scheduling   
+https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container
+
+Resource Limits
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod 
+spec: 
+  containers:
+  - name: busybox 
+    image: busybox
+    resources:
+      requests:         ## Requests = estimate for scheduling
+        memory: "64Mi"  ## in bytes, 64Mi = 64MiB
+        cpu: "250m"     ## CPU units in 1/1000 of a CPU, 250m = 1/4
+      limits:           ## Limits = enforced limit, stop if exceed
+        memory: "128Mi"
+        cpu: "500m"      
+```
+
+### 2.6. Awareness of manifest management and common templating tools   
+
+* [helm](https://helm.sh)  
+  * Templating (charts) & package mgmt  
+* [kcompose](https://github.com/kubernetes/kompose)  
+  * from Docker compose to K8s objects  
+* [kustomize](https://kustomize.io)  
+  * Config managment tool (similar to helm)  
+  * https://kubernetes.io/blog/2018/05/29/introducing-kustomize-template-free-configuration-customization-for-kubernetes/ 
 
 ## 3. Services & Networking 20%
 ### 3.1. Understand host networking configuration on the cluster nodes
@@ -574,30 +611,7 @@ spec:
 
 
 
-```
 
-### Resource requests and limits of Pod and Container  
-https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container
-
-Resource Limits
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: my-pod 
-spec: 
-  containers:
-  - name: busybox 
-    image: busybox
-    resources:
-      requests:         ## Requests = estimate for scheduling
-        memory: "64Mi"  ## in bytes, 64Mi = 64MiB
-        cpu: "250m"     ## CPU units in 1/1000 of a CPU, 250m = 1/4
-      limits:           ## Limits = enforced limit, stop if exceed
-        memory: "128Mi"
-        cpu: "500m"      
-```
 
 ## 8. Container Health
 
