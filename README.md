@@ -774,8 +774,9 @@ spec:
 
 ### 2.5. Understand how resource limits can affect Pod scheduling   
 https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container  
-
-#### Resource Limits  
+  
+  
+#### Resource Limits  
 
 ```yaml
 apiVersion: v1
@@ -794,8 +795,9 @@ spec:
         memory: "128Mi"
         cpu: "500m"      
 ```
-
-#### K8s Scheduling  
+  
+  
+#### K8s Scheduling  
 https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/  
 https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/  
 
