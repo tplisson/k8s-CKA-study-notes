@@ -232,6 +232,25 @@ kubectl completion bash
 ### 1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm 
 https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/  
 
+Overview:
+1. Upgrade Control Plane
+    1. upgrade kubeadm
+    2. drain node
+    3. upgrade kubelet & kubectl
+    4. uncordon node
+2. Upgrade Worker node1
+    1. upgrade kubeadm
+    2. drain node
+    3. upgrade kubelet & kubectl
+    4. uncordon node
+3. Upgrade Worker node2
+    1. upgrade kubeadm
+    2. drain node
+    3. upgrade kubelet & kubectl
+    4. uncordon node
+4. … etc.
+
+
 #### [Draining a node](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)  
 To remove a node from service for upgrade or maintenance = gracefully terminate / move containers to other nodes
 
