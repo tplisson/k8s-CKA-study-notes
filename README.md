@@ -1118,8 +1118,8 @@ Each Service is automatically assigned a DNS name:
 <service-name>.<namespace>.svc.<cluster-domain>
 svc-frontend.default.svc.cluster.local
 ```
-
-
+  
+  
 ### 3.6. Choose an appropriate container network interface plugin  
 https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/
 
@@ -1132,9 +1132,10 @@ Installing Calico
 ```
 kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
 ```
-
-
-
+  
+  
+  
+  
 ## 4. Storage 10%  
 
 ### 4.1. Understand storage classes, persistent volumes  
@@ -1151,8 +1152,8 @@ metadata:
 provisioner: kubernetes.io/no-provisioner # <--- no | AWS EBS | AzureFile | CephFS | FS | Local …
 allowVolumeExpansion: true                # <---- a PVC can only expand if this is set to true 
 ```
-
-
+  
+  
 #### Volumes  
 https://kubernetes.io/docs/concepts/storage/volumes/  
 https://kubernetes.io/docs/concepts/storage/persistent-volumes/  
@@ -1393,6 +1394,7 @@ systemctl start kubelet
 systemctl enable kubelet
 ```
 
+
 #### Cluster and Node Logs
 https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/#looking-at-logs
 ```
@@ -1410,6 +1412,7 @@ Deployed without Kubeadm
 /var/log/kube-scheduler.log
 /var/log/kube-controller-manager.log
 ```
+
 
 ### 5.2. Understand how to monitor applications   
 https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/
