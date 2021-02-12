@@ -224,7 +224,9 @@ https://kubernetes.io/docs/reference/tools/)
 #### Kubectl autocomplete 
 BASH
 ```
-kubectl completion bash
+source <(kubectl completion bash)
+alias k=kubectl
+complete -F __start_kubectl k
 ```
 
 
@@ -1106,10 +1108,15 @@ Check that CoreDNS is running on control plane
 kubectl get deployment kube-dns --n kube-system 
 ```
 
-Each Pod automatically gets a DNS name:
+Each Pod is automatically assigned a DNS name:
 ```
 <pod-ip-addr-w-dashes>.<namespace>.pod.cluster.local
 192-168-100-1.default.pod.cluster.local
+```
+Each Service is automatically assigned a DNS name:
+```
+<service-name>.<namespace>.svc.<cluster-domain>
+svc-frontend.default.svc.cluster.local
 ```
 
 
