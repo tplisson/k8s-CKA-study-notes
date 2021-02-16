@@ -1158,8 +1158,10 @@ allowVolumeExpansion: true                # <---- a PVC can only expand if this 
 https://kubernetes.io/docs/concepts/storage/volumes/  
 https://kubernetes.io/docs/concepts/storage/persistent-volumes/  
 
-Container File Sytems = ephemeral !  
-Volumes allow Persistant Storage  
+Remember that container File Sytems is ephemeral !  
+Volumes allow Persistant Storage for containers within a single Pod. 
+Its lifecycle is coupled to a Pod.
+It enables safe container restarts and sharing data between containers within a Pod.
 
 Volume type:
 * emptyDir = dynamically created, useful to share data between containers (ephemeral)
@@ -1219,6 +1221,7 @@ https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 * K8s Object (not simply referred to in a Pod Object)
 * More advanced form of Volume. 
 * Allow to treat Storage as an abstract resource and consume it using Pods.
+* Its lifecycle is independent of a single Pod, so it enables safe Pod restarts and sharing data between Pods.
 
 PersistentVolume (PV) object  
 https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistent-volumes
@@ -1230,16 +1233,15 @@ metadata:
   name: my-pv
 spec:
   storageClassName: my-localdisk
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Recycle 
   capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
     path: /var/output
+```  
 
-#persistentVolumeReclaimPolicy = Recycle | Retain | Delete
-```
 
 #### Types of Persistent Volumes
 
@@ -1304,25 +1306,27 @@ RWX - ReadWriteMany
 #### Reclaim Policies   
 https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reclaiming
 
-Reclaim Policies:
-* Recycle 
-* Retain
-* Delete
-
+Reclaim Policies:  
+* Recycle = automatically delete all data in underlying storage resource  
+* Retain = keep all data (manual cleanup required by admin)  
+* Delete = (only for cloud storage resources) automatically delete all data  
+  
 ```yaml
 apiVersion: v1
 kind: PersistentVolume
 spec:
   ...
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Recycle | Retain | Delete
   ...
 ```
-
-
-
+  
+  
+  
 ### 4.3. Understand persistent volume claims primitive  
 https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reserving-a-persistentvolume  
-object = user’s request w attributes 
+
+PersistentVolumeClaim object = user’s request w attributes 
+Bound to a PersistentVolume based on a matching StorageClass
 
 ```yaml
 apiVersion: v1
@@ -1339,7 +1343,7 @@ spec:
 ```
 
 “Expand” a PVC = edit spec.resource.request.storage attribute of existing PVC
-(must support allowVolumeExpansion = true)
+(must support allowVolumeExpansion = true in the StorageClass definition)
 
 
 
