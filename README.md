@@ -6,33 +6,33 @@ https://www.cncf.io/certification/cka/
 
 Domain	| Weight
 ------- | -------------
-[**1. Cluster Architecture, Installation & Configuration**](README.md#1-cluster-architecture-installation--configuration-25)	| 25%  
+**1. Cluster Architecture, Installation & Configuration**	| 25%  
    [1.1. Manage role based access control (RBAC)](README.md#11-manage-role-based-access-control-rbac) |  
    [1.2. Use Kubeadm to install a basic cluster](README.md#11-use-kubeadm-to-install-a-basic-cluster) |  
    [1.3. Manage a highly-available Kubernetes cluster](README.md#13-manage-a-highly-available-kubernetes-cluster) |  
    [1.4. Provision underlying infrastructure to deploy a Kubernetes cluster](README.md#14-provision-underlying-infrastructure-to-deploy-a-kubernetes-cluster) |  
    [1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm](README.md#15-perform-a-version-upgrade-on-a-kubernetes-cluster-using-kubeadm) |  
    [1.6. Implement etcd backup and restore](README.md#16-implement-etcd-backup-and-restore) |  
-[**2. Workloads & Scheduling**](README.md#2-workloads--scheduling-15)	| 15%  
+**2. Workloads & Scheduling**	| 15%  
 [2.1. Understand deployments and how to perform rolling update and rollbacks](README.md#21-understand-deployments-and-how-to-perform-rolling-update-and-rollbacks) |  
 [2.2. Use ConfigMaps and Secrets to configure applications](README.md#22-use-configmaps-and-secrets-to-configure-applications) |  
 [2.3. Know how to scale applications](README.md#23-know-how-to-scale-applications) |  
 [2.4. Understand the primitives used to create robust, self-healing, application deployments](README.md#24-understand-the-primitives-used-to-create-robust-self-healing-application-deployments) |  
 [2.5. Understand how resource limits can affect Pod scheduling](README.md#25-understand-how-resource-limits-can-affect-pod-scheduling) |  
 [2.6. Awareness of manifest management and common templating tools](README.md#26-awareness-of-manifest-management-and-common-templating-tools) |  
-[**3. Services & Networking**](README.md#3-services--networking-20) 	| 20%  
+**3. Services & Networking** 	| 20%  
 [3.1. Understand host networking configuration on the cluster nodes](README.md#31-understand-host-networking-configuration-on-the-cluster-nodes)  |  
 [3.2. Understand connectivity between Pods](README.md#32-understand-connectivity-between-pods) |  
 [3.3. Understand ClusterIP, NodePort, LoadBalancer service types and endpoints](README.md#33-understand-clusterip-nodeport-loadbalancer-service-types-and-endpoints) |  
 [3.4. Know how to use Ingress controllers and Ingress resources](README.md#34-know-how-to-use-ingress-controllers-and-ingress-resources) |  
 [3.5. Know how to configure and use CoreDNS](README.md#35-know-how-to-configure-and-use-coredns) |  
 [3.6. Choose an appropriate container network interface plugin](README.md#36-choose-an-appropriate-container-network-interface-plugin) |  
-[**4. Storage**](README.md#4-storage-10)	| 10%  
+**4. Storage** | 10%  
 [4.1. Understand storage classes, persistent volumes](README.md#41-understand-storage-classes-persistent-volumes) |  
 [4.2. Understand volume mode, access modes and reclaim policies for volumes](README.md#42-understand-volume-mode-access-modes-and-reclaim-policies-for-volumes) |  
 [4.3. Understand persistent volume claims primitive](README.md#43-understand-persistent-volume-claims-primitive) |  
 [4.4 Know how to configure applications with persistent storage](README.md#44-know-how-to-configure-applications-with-persistent-storage) |   
-[**5. Troubleshooting**]()	| 30%  
+**5. Troubleshooting**	| 30%  
 [5.1. Evaluate cluster and node logging](README.md#51-evaluate-cluster-and-node-logging) |  
 [5.2. Understand how to monitor applications](README.md#52-understand-how-to-monitor-applications) |  
 [5.3. Manage container stdout & stderr logs](README.md#53-manage-container-stdout--stderr-logs) |  
@@ -1399,6 +1399,7 @@ spec:
 
 
 ### 4.4 Know how to configure applications with persistent storage   
+https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 
 Using PVC in a Pod
 
@@ -1472,6 +1473,7 @@ kubectl get endpoints <service>
 
 
 ### 5.3. Manage container stdout & stderr logs  
+https://kubernetes.io/docs/concepts/cluster-administration/logging/
 
 stdout + stderr streams
 ```
@@ -1479,10 +1481,21 @@ kubectl logs <pod> -c <container>
 ```
 
 ### 5.4. Troubleshoot application failure  
+https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/
+
+Check  current state of the Pod and recent events:
+```
+kubectl describe pods <podname>
+```
 
 Verify there are endpoints for a service
 ```
 kubectl get endpoints <service>
+```
+
+Check k8s scheduler:
+```
+kubectl get events
 ```
 
 ### 5.5. Troubleshoot cluster component failure   
@@ -1509,8 +1522,6 @@ systemctl enable kubelet
 ```
 
 ### 5.6 Troubleshoot networking  
-
-https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/
 https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/
 
 ### Debugging Calico
@@ -1522,6 +1533,7 @@ kubectl logs <calico-node-podname> -n kube-system
 ```
 
 #### Debugging DNS 
+https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/
 
 Check CoreDNS:
 ```
