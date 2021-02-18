@@ -323,6 +323,56 @@ sudo systemctl restart kubelet
 ### 1.6. Implement Etcd backup and restore 
 https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/  
 
+[`etcd`](https://github.com/etcd-io/etcd) is a distributed reliable key-value store 
+
+[`etcdctl`](https://github.com/etcd-io/etcd/tree/master/etcdctl) is a command line client for etcd.
+
+Some common commands:
+```
+etcdctl version
+etcdctl member list --write-out=table
+etcdctl endpoint status --write-out=table 
+etcdctl put foo bar
+etcdctl get foo
+etcdctl get --from-key ''
+```
+
+Some flags are required:
+* endpoints (gRPC endpoints)
+* cacert
+* cert
+* key
+
+**Note**: If using etcdctl versions earlier than v3.4, set ETCDCTL_API=3 to use v3 API.
+
+These flags can be specified for each command:
+```
+$ etcdctl member list --endpoints=10.0.1.101:2379 --cacert=etcd-certs/etcd-ca.pem --cert=etcd-certs/etcd-server.crt --key=etcd-certs/etcd-server.key --write-out=table member list
++------------------+---------+--------+-------------------------+-------------------------+------------+
+|        ID        | STATUS  |  NAME  |       PEER ADDRS        |      CLIENT ADDRS       | IS LEARNER |
++------------------+---------+--------+-------------------------+-------------------------+------------+
+| becbde068816b65f | started | etcd-1 | https://10.0.1.101:2380 | https://10.0.1.101:2379 |      false |
++------------------+---------+--------+-------------------------+-------------------------+------------+
+```
+
+Global flags can also be set with environment variables:
+```
+export ETCDCTL_ENDPOINTS=10.0.1.101:2379
+export ETCDCTL_CACERT=etcd-certs/etcd-ca.pem
+export ETCDCTL_CERT=etcd-certs/etcd-server.crt
+export ETCDCTL_KEY=etcd-certs/etcd-server.key
+```
+
+```
+$ etcdctl member list --write-out=table 
++------------------+---------+--------+-------------------------+-------------------------+------------+
+|        ID        | STATUS  |  NAME  |       PEER ADDRS        |      CLIENT ADDRS       | IS LEARNER |
++------------------+---------+--------+-------------------------+-------------------------+------------+
+| becbde068816b65f | started | etcd-1 | https://10.0.1.101:2380 | https://10.0.1.101:2379 |      false |
++------------------+---------+--------+-------------------------+-------------------------+------------+
+```
+
+
 #### Backing up Etcd
 
 Basics
@@ -333,14 +383,10 @@ etcdctl snapshot save <filename>
 Example:
 ```
 # Save a snapshot 
-ETCDCTL_API=3 etcdctl snapshot save snapshot1 \
-  --endpoints=https://[127.0.0.1]:2379 \
-  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
-  --cert=/etc/kubernetes/pki/etcd/server.crt \
-  --key=/etc/kubernetes/pki/etcd/server.key 
+etcdctl snapshot save etcd_backup.db
   
 # Verify the snapshot 
-ETCDCTL_API=3 etcdctl --write-out=table snapshot status snapshot1
+etcdctl snapshot status etcd_backup.db --write-out=table 
 ```
 
 #### Restoring an Etcd backup 
@@ -361,14 +407,10 @@ sudo systemctl stop etcd
 sudo rm -rf /var/lib/etcd
 
 # Restore a backup
-etcdctl snapshot restore <filename>
+etcdctl snapshot restore etcd_backup.db
 
 # Check etcd member list
-ETCDCTL_API=3 etcdctl member list \
-  --endpoints=https://[127.0.0.1]:2379 \
-  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
-  --cert=/etc/kubernetes/pki/etcd/server.crt \
-  --key=/etc/kubernetes/pki/etcd/server.key 
+etcdctl member list --write-out=table 
 
 # Change ownership from root to etcd
 sudo chown -R etcd:etcd /var/lib/etcd
@@ -377,11 +419,7 @@ sudo chown -R etcd:etcd /var/lib/etcd
 sudo systemctl start etcd
 
 # Look up the value for the key cluster.name in the etcd cluster:
-ETCDCTL_API=3 etcdctl get cluster.name \
-  --endpoints=https://[127.0.0.1]:2379 \
-  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
-  --cert=/etc/kubernetes/pki/etcd/server.crt \
-  --key=/etc/kubernetes/pki/etcd/server.key 
+etcdctl get --from-key ''
 ```
 
 
