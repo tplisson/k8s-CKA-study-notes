@@ -1506,6 +1506,17 @@ Check kube-proxy logs
 /var/log/kube-proxy.log
 ```
 
+#### Debugging DNS 
+```
+kubectl apply -f https://k8s.io/examples/admin/dns/dnsutils.yaml
+
+kubectl get pods dnsutils
+
+kubectl exec -it dnsutils -- nslookup kubernetes.default
+kubectl exec -it dnsutils -- cat /etc/resolv.conf
+```
+
+
 Netshoot
 https://github.com/nicolaka/netshoot
 
