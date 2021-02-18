@@ -1420,31 +1420,8 @@ spec:
 ## 5. Troubleshooting 30%  
 
 ### 5.1. Evaluate cluster and node logging  
-https://kubernetes.io/docs/tasks/debug-application-cluster/troubleshooting/  
-https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/  
+https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/#looking-at-logs  
 
-```
-kubectl get nodes
-kubectl describe node <name>
-kubectl cluster-info dump
-```
-
-Deployed with Kubeadm
-```
-kubectl get pods -n kube-system
-kubectl describe pod <name> -n kube-system
-```
-
-Deployed without Kubeadm
-```
-systemctl status kubelet | docker | ...
-systemctl start kubelet
-systemctl enable kubelet
-```
-
-
-#### Cluster and Node Logs
-https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/#looking-at-logs
 ```
 sudo journalctl -u kubelet   ### -u = unit
 sudo journalctl -u docker | containerd
@@ -1492,11 +1469,42 @@ kubectl logs <pod> -c <container>
 ### 5.4. Troubleshoot application failure  
 
 ### 5.5. Troubleshoot cluster component failure   
+https://kubernetes.io/docs/tasks/debug-application-cluster/troubleshooting/  
+https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/  
+
+```
+kubectl get nodes
+kubectl describe node <name>
+kubectl cluster-info dump
+```
+
+Deployed with Kubeadm
+```
+kubectl get pods -n kube-system
+kubectl describe pod <name> -n kube-system
+```
+
+Deployed without Kubeadm
+```
+systemctl status kubelet | docker | ...
+systemctl start kubelet
+systemctl enable kubelet
+```
 
 ### 5.6 Troubleshoot networking  
 
 https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/
 https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/
+
+Is kube-proxy running?
+```
+ps auxw | grep kube-proxy
+```
+
+Check kube-proxy logs
+```
+/var/log/kube-proxy.log
+```
 
 Netshoot
 https://github.com/nicolaka/netshoot
