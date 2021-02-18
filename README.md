@@ -97,7 +97,7 @@ roleRef:
 #### Service Accounts
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
 
-Service Account = account used by container processes within pods to authenticate and control access to K8s APIs
+Service Accounts are accounts used by container processes within pods to authenticate and control access to K8s APIs
 
 ```yaml
 Service Account
@@ -323,11 +323,11 @@ sudo systemctl restart kubelet
 ### 1.6. Implement Etcd backup and restore 
 https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/  
 
-[`etcd`](https://github.com/etcd-io/etcd) is a distributed reliable key-value store 
+[`etcd`](https://github.com/etcd-io/etcd) is a distributed reliable key-value store used as the backend data storage for K8s clusters. All k8s objects, applications and configurations are stored in etcd.
 
 [`etcdctl`](https://github.com/etcd-io/etcd/tree/master/etcdctl) is a command line client for etcd.
 
-Some common commands:
+Some simple commands:
 ```
 etcdctl version
 etcdctl member list --write-out=table
