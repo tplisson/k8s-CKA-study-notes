@@ -169,12 +169,12 @@ https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topolog
 #### Control Plane HA   
 Deploy K8s control plane on multiple nodes & ensure that a single node failure does not impact the cluster’s control plane functions.
 
-node1: kube-api-server	
-node2: kube-api-server
-node3: kube-api-server
-node4: kubelet
-node5: kubelet
-...
+- node#1: kube-api-server	
+- node#2: kube-api-server
+- node#3: kube-api-server
+- node#4: kubelet
+- node#5: kubelet
+ ...
 
 Load Balancer schedules tasks across redundant nodes 
 
@@ -348,7 +348,12 @@ Some flags are required:
 
 These flags can be specified for each command:
 ```
-$ etcdctl member list --endpoints=10.0.1.101:2379 --cacert=etcd-certs/etcd-ca.pem --cert=etcd-certs/etcd-server.crt --key=etcd-certs/etcd-server.key --write-out=table member list
+$ etcdctl member list \
+--endpoints=10.0.1.101:2379 \
+--cacert=etcd-certs/etcd-ca.pem \
+--cert=etcd-certs/etcd-server.crt \
+--key=etcd-certs/etcd-server.key \
+--write-out=table member list
 +------------------+---------+--------+-------------------------+-------------------------+------------+
 |        ID        | STATUS  |  NAME  |       PEER ADDRS        |      CLIENT ADDRS       | IS LEARNER |
 +------------------+---------+--------+-------------------------+-------------------------+------------+
