@@ -1,8 +1,9 @@
 # Certified Kubernetes Associate (CKA) Study Guide  
 This is my study guide for the Certified Kubernetes Associate (CKA) exam.  
 
-![CKA-logo](https://www.cncf.io/wp-content/uploads/2020/08/logo_cka_whitetext-2-500x500.png "CKA Logo")
-
+<p align="center">
+  <img src="https://www.cncf.io/wp-content/uploads/2020/08/logo_cka_whitetext-2-500x500.png">
+</p>
 
 #### CKA Curriculum  
 https://www.cncf.io/certification/cka/  
