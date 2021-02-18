@@ -939,11 +939,18 @@ Mirror Pod created to represent a Static Pod in the Kuberntes API, allowing you 
 
 Manifest path for static pods on each node under:
 ```
-/etc/kubernetes/manifests/
+vi /etc/kubernetes/manifests/<podname>
 ```
 
+Restart kubelet on the node where the kubelet is running:
+```
+systemctl restart kubelet
+```
 
-
+Check result on the Control Plane:
+```
+kubectl get pods
+```
 
 ### 2.6. Awareness of manifest management and common templating tools   
 https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/
