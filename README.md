@@ -1453,7 +1453,7 @@ CLI commands within a Pod
 kubectl exec <pod> -c <container> -- <command>
 ```
 
-verify there are endpoints for a service
+Verify there are endpoints for a service
 ```
 kubectl get endpoints <service>
 ```
@@ -1468,6 +1468,11 @@ kubectl logs <pod> -c <container>
 
 ### 5.4. Troubleshoot application failure  
 
+Verify there are endpoints for a service
+```
+kubectl get endpoints <service>
+```
+
 ### 5.5. Troubleshoot cluster component failure   
 https://kubernetes.io/docs/tasks/debug-application-cluster/troubleshooting/  
 https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/  
@@ -1478,13 +1483,13 @@ kubectl describe node <name>
 kubectl cluster-info dump
 ```
 
-Deployed with Kubeadm
+For cluster deployed with Kubeadm
 ```
 kubectl get pods -n kube-system
 kubectl describe pod <name> -n kube-system
 ```
 
-Deployed without Kubeadm
+For cluster deployed without Kubeadm
 ```
 systemctl status kubelet | docker | ...
 systemctl start kubelet
