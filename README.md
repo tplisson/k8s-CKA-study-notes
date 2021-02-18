@@ -1,7 +1,7 @@
-# Certified-Kubernetes-Associate-Prep
-My Certified Kubernetes Associate (CKA) preparation notes.
+# Certified Kubernetes Associate (CKA) Study Guide  
+This is my study guide for the Certified Kubernetes Associate (CKA) exam.  
 
-#### CKA Curriculum 
+#### CKA Curriculum  
 https://www.cncf.io/certification/cka/  
 
 Domain	| Weight
@@ -44,7 +44,8 @@ Domain	| Weight
 K8s version 1.20 (Jan 22, 2021)
  
 
-#### ACG Training 
+#### ACG Training  
+Excellent course with A Cloud Guru:
 https://learn.acloud.guru/course/certified-kubernetes-administrator/  
 by William Boyd
 
