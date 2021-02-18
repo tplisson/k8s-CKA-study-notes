@@ -1496,6 +1496,8 @@ systemctl enable kubelet
 https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/
 https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/
 
+#### Debugging kube-proxy
+
 Is kube-proxy running?
 ```
 ps auxw | grep kube-proxy
@@ -1516,8 +1518,9 @@ kubectl exec -it dnsutils -- nslookup kubernetes.default
 kubectl exec -it dnsutils -- cat /etc/resolv.conf
 ```
 
+#### Cool tools
 
-Netshoot
+Netshoot  
 https://github.com/nicolaka/netshoot
 
 
