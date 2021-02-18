@@ -1427,6 +1427,11 @@ sudo journalctl -u kubelet   ### -u = unit
 sudo journalctl -u docker | containerd
 ```
 
+To list all units available for journalctl to use:
+```
+systemctl list-unit-files --all
+```
+
 Deployed with Kubeadm
 ```
 kubectl logs <pod> -n kube-system
@@ -1483,13 +1488,13 @@ kubectl describe node <name>
 kubectl cluster-info dump
 ```
 
-For cluster deployed with Kubeadm
+For cluster deployed with Kubeadm:
 ```
 kubectl get pods -n kube-system
 kubectl describe pod <name> -n kube-system
 ```
 
-For cluster deployed without Kubeadm
+For cluster deployed without Kubeadm:
 ```
 systemctl status kubelet | docker | ...
 systemctl start kubelet
@@ -1501,19 +1506,23 @@ systemctl enable kubelet
 https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/
 https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/
 
-#### Debugging kube-proxy
-
-Is kube-proxy running?
+### Debugging Calico
 ```
-ps auxw | grep kube-proxy
-```
-
-Check kube-proxy logs
-```
-/var/log/kube-proxy.log
+kubectl get deploy calico-kube-controllers -n kube-system -o wide
+kubectl get po -n kube-system -o wide | grep calico
+kubectl logs <calico-kube-controllers-podname> -n kube-system
+kubectl logs <calico-node-podname> -n kube-system
 ```
 
 #### Debugging DNS 
+
+Check CoreDNS:
+```
+kubectl get deploy coredns -n kube-system -o wide
+kubectl get po -n kube-system -o wide | grep coredns
+kubectl logs <coredns-podname> -n kube-system
+```
+
 ```
 kubectl apply -f https://k8s.io/examples/admin/dns/dnsutils.yaml
 
@@ -1522,6 +1531,19 @@ kubectl get pods dnsutils
 kubectl exec -it dnsutils -- nslookup kubernetes.default
 kubectl exec -it dnsutils -- cat /etc/resolv.conf
 ```
+
+#### Debugging kube-proxy
+
+Check if kube-proxy is running:
+```
+ps auxw | grep kube-proxy
+```
+
+Check kube-proxy logs:
+```
+/var/log/kube-proxy.log
+```
+
 
 #### Cool tools
 
