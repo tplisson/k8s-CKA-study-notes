@@ -238,18 +238,22 @@ Overview:
 1. Upgrade Control Plane
     1. upgrade kubeadm
     2. drain node
-    3. upgrade kubelet & kubectl
-    4. uncordon node
+    3. plan kubeadm upgrade
+    4. apply kubeadm upgrade
+    5. upgrade kubelet & kubectl
+    6. uncordon node
 2. Upgrade Worker node1
     1. upgrade kubeadm
     2. drain node
-    3. upgrade kubelet & kubectl
-    4. uncordon node
+    3. upgrade kubeadm node
+    4. upgrade kubelet & kubectl
+    5. uncordon node
 3. Upgrade Worker node2
     1. upgrade kubeadm
     2. drain node
-    3. upgrade kubelet & kubectl
-    4. uncordon node
+    3. upgrade kubeadm node
+    4. upgrade kubelet & kubectl
+    5. uncordon node
 4. … etc.
 
 
@@ -278,6 +282,7 @@ sudo apt-get install -y kubeadm=1.20.2-00 && \
 # or
 sudo apt-get install -y --allow-change-held-packages kubeadm=1.20.2-00 && \
 sudo apt-mark hold kubeadm && \
+sudo kubeadm upgrade plan v1.20.2 && \
 sudo kubeadm upgrade apply v1.20.2 && \
 kubeadm version
 ```
