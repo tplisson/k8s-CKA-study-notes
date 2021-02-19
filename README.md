@@ -583,6 +583,7 @@ How to get a base64 key from a string:
 ```
 echo -n 'secret' | base64 
 ```
+**Note**: the `-n` flag for `echo` means: "do not output the trailing newline"
 
 #### Environment Variables 
 https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/  
