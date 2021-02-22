@@ -4,6 +4,7 @@ This is my study guide for the Certified Kubernetes Associate (CKA) exam.
 <p align="center">
   <img src="https://www.cncf.io/wp-content/uploads/2020/08/logo_cka_whitetext-2-500x500.png">
 </p>
+<br/>
 
 #### CKA Curriculum  
 https://www.cncf.io/certification/cka/  
@@ -47,12 +48,14 @@ Domain	| Weight
 2Hrs | Cost $300 | [Online Exam](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/)
 K8s version 1.20 (Jan 22, 2021)
  
+<br/>
 
 #### ACG Training  
 Excellent course with A Cloud Guru:
 https://learn.acloud.guru/course/certified-kubernetes-administrator/  
 by William Boyd
 
+<br/><br/>
 
 ## 1. Cluster Architecture, Installation & Configuration 25%
 
@@ -66,6 +69,7 @@ Objects:
     * in namespace  
 * **ClusterRole** <— **ClusterRoleBinding**  
     * in whole cluster  
+<br/>
 
 #### Role
 ```yaml
@@ -78,7 +82,13 @@ rules:
 - apiGroups: [""] # "" indicates the core API group
   resources: ["pods"]
   verbs: ["get", "watch", "list"]
+```  
+
+To get documentation of various resources:
 ```
+kubectl explain role --recursive
+```  
+<br/>
 
 #### RoleBinding
 ```yaml
@@ -98,6 +108,13 @@ roleRef:
   name: pod-reader # must match name of Role | ClusterRole to bind to
   apiGroup: rbac.authorization.k8s.io
 ```
+  
+To get documentation of various resources:
+```
+kubectl explain rolebinding --recursive
+```  
+
+<br/><br/>
 
 #### Service Accounts
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
@@ -133,8 +150,13 @@ roleRef:
   name: pod-reader
   apiGroup: rbac.authorization.k8s.io
 ```
+<br/>
+To get documentation of various resources:
+```
+kubectl explain sa --recursive
+```  
 
-
+<br/><br/>
 
 ### 1.2. Use Kubeadm to install a basic cluster  
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
@@ -165,7 +187,7 @@ Join the Cluster on Worker Nodes
 sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>
 ```
 
-
+<br/><br/>
 
 ### 1.3. Manage a highly-available Kubernetes cluster  
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/  
@@ -182,6 +204,7 @@ Deploy K8s control plane on multiple nodes & ensure that a single node failure d
 
 Load Balancer schedules tasks across redundant nodes 
 
+<br/>
 
 #### Etcd Data Store  
 
@@ -190,15 +213,17 @@ Load Balancer schedules tasks across redundant nodes
 - External Etcd  
   - Etcd does not run on control plane nodes but on external nodes  
   
-
+<br/><br/>
 
 ### 1.4. Provision underlying infrastructure to deploy a Kubernetes cluster
+<br/>
 
 #### K8s Installation
 [k8s-install-base-docker.sh](https://gist.github.com/tplisson/1bb67b45d4c92d83b22a6d1e20771234)  
 [k8s-install-base-containerd.sh](https://gist.github.com/tplisson/caaf5ce57a95d6b3cd6af3d5b53aa15f)  
 [Centos w kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)  
 
+<br/>
 
 #### Install Container Runtime
 Install Docker Engine  
@@ -207,6 +232,7 @@ https://docs.docker.com/engine/install/
 Install Containerd  
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
+<br/>
 
 #### Management Tools
 https://kubernetes.io/docs/reference/tools/)  
@@ -234,7 +260,7 @@ alias k=kubectl
 complete -F __start_kubectl k
 ```
 
-
+<br/><br/>
 
 ### 1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm 
 https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/  
@@ -261,6 +287,7 @@ Overview:
     5. uncordon node
 4. … etc.
 
+<br/>
 
 #### [Draining a node](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)  
 To remove a node from service for upgrade or maintenance = gracefully terminate / move containers to other nodes
@@ -276,6 +303,7 @@ After maintenance, allow pods to run on the node
 kubectl uncordon <node-name>
 ```
 
+<br/>
 
 #### Control Plane Nodes Upgrade
 
@@ -301,6 +329,7 @@ sudo apt-mark hold kubelet kubectl && \
 sudo systemctl daemon-reload && \
 sudo systemctl restart kubelet
 ```
+<br/>
 
 #### Worker Nodes Upgrades
 
@@ -323,7 +352,7 @@ sudo systemctl daemon-reload && \
 sudo systemctl restart kubelet
 ```
 
-
+<br/>
 
 ### 1.6. Implement Etcd backup and restore 
 https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/  
@@ -381,7 +410,7 @@ $ etcdctl member list --write-out=table
 | becbde068816b65f | started | etcd-1 | https://10.0.1.101:2380 | https://10.0.1.101:2379 |      false |
 +------------------+---------+--------+-------------------------+-------------------------+------------+
 ```
-
+<br/>
 
 #### Backing up Etcd
 
@@ -432,7 +461,7 @@ sudo systemctl start etcd
 etcdctl get --from-key ''
 ```
 
-
+<br/>
 
 ## 2. Workloads & Scheduling 15%
 
@@ -442,8 +471,11 @@ https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/
 #### Deployments  
 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
 * Scaling up / down easily number of replicas
-* Rolling updates to deploy new SW version
+* Rolling updates to deploy new SW version  
 
+<br/>
+
+Here's an example of a deployment for an NGINX app:
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -465,33 +497,32 @@ spec:
         ports:
         - containerPort: 80
 ```
-
-
+<br/>
 
 #### Rolling Updates  
 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#updating-a-deployment
 
-Three options for rolling updates
+Three options for rolling updates:
 
-1- Using imperative command “kubectl set image”
-Use —record to easily rollback
+1- Using imperative command `kubectl set image`:
+(use `--record` to easily rollback)
 ```
 kubectl set image deployment/my-deployment nginx=nginx:1.19.2 --record
 ```
 
-2- Using imperative command “kubectl edit deploy”
+2- Using imperative command `kubectl edit deploy`:
 ```
 kubectl edit deployment my-deployment
 ```
-Any change is applied immediately, no need for kubectl apply
+Note: any change is applied immediately, no need for `kubectl apply`
 
-3- Editing specs in the deployment YAML manifest 
+3- Editing specs in the deployment YAML manifest:
 ```
 vi deployment.yaml
 kubectl apply -f deployment.yaml
 ```
 
-Check status
+Check deployment status:
 ```
 kubectl rollout status deployment my-deployment
 kubectl rollout status deployment/my-deployment
@@ -501,45 +532,49 @@ kubectl rollout history deployment my-deployment
 #### Rollback  
 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-back-a-deployment
 
-Three options for rolling back
+Three options for rolling back:
 
-1- Using imperative command “kubectl rollout undo”
+1- Using imperative command `kubectl rollout undo`:
 ```
 kubectl rollout history deployment/my-deployment
 kubectl rollout undo deployment.v1.apps/my-deployment
 kubectl rollout undo deployment.v1.apps/my-deployment --to-revision=1
 ```
-Use "--to-revision" when "—-record" was used
+Note: use `--to-revision` when `—-record` was used
 
 
-2- Using imperative command “kubectl edit deploy”
+2- Using imperative command `kubectl edit deploy`
 ```
 kubectl edit deployment my-deployment
 kubectl rollout status deployment my-deployment
 ```
-Any change is applied immediately, no need for kubectl apply
+Note: any change is applied immediately, no need for `kubectl apply`
 
 
-3- Editing specs in the deployment YAML manifest 
+3- Editing specs in the deployment YAML manifest:
 ```
 vi deployment.yaml
 kubectl apply -f deployment.yaml
 ```
 
+<br/>
 
-Check status
+Check rollout status:
 ```
 kubectl rollout status deployment my-deployment
 kubectl rollout history deployment my-deployment
 ```
 
+<br/><br/>
 
 
 ### 2.2. Use ConfigMaps and Secrets to configure applications
 
-#### ConfigMaps 
+#### ConfigMaps
 https://kubernetes.io/docs/concepts/configuration/configmap/  
-ConfigMap = API object used to store non-confidential data in key-value pairs. 
+
+ConfigMap is an API object used to store non-confidential data in key-value pairs. 
+
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -562,7 +597,8 @@ data:
 
 #### Secrets 
 https://kubernetes.io/docs/concepts/configuration/secret/  
-Secrets = API object used to store and manage sensitive information, such as passwords, OAuth tokens, and SSH keys
+
+Secrets are API objects used to store and manage sensitive information, such as passwords, OAuth tokens, and SSH keys.
 
 ```yaml
 apiVersion: v1
@@ -574,7 +610,7 @@ data:
   secretkey1: <base64-string1>
 ```
 
-Or using the imperative command
+Or using the imperative command:
 ```
 kubectl create secret generic my-secret --from-file=path/to/bar
 ```
@@ -582,8 +618,11 @@ kubectl create secret generic my-secret --from-file=path/to/bar
 How to get a base64 key from a string:
 ```
 echo -n 'secret' | base64 
-```
-**Note**: the `-n` flag for `echo` means: "do not output the trailing newline"
+```  
+
+**Note**: the `-n` flag for `echo` means: "do not output the trailing newline".
+
+<br/>
 
 #### Environment Variables 
 https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/  
@@ -609,6 +648,7 @@ spec:
           name: my-secret 
           key: secretkey1
 ```
+<br/>
 
 #### Configuration Volumes  
 https://kubernetes.io/docs/concepts/storage/volumes/
@@ -638,30 +678,31 @@ spec:
       mountPath: /etc/nginx/conf
 ```
 
+<br/><br/>
 
 ### 2.3. Know how to scale applications  
 https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#scaling-a-deployment
 
-Three options for scaling
+Three options for scaling an app:
 
-1- Using imperative command “kubectl scale”
+1- Using imperative command `kubectl scale`:
 ```
 kubectl scale deployment.v1.apps/my-deployment --replicas=5
 ```
+<br/>
 
-
-2- Using imperative command “kubectl edit deploy”
+2- Using imperative command `kubectl edit deploy`:
 ```
 kubectl edit deployment my-deployment
 ```
-Any change is applied immediately, no need for kubectl apply
+Note: any change is applied immediately, no need for `kubectl apply`
+<br/>
 
-
-3- Editing replicas number in the deployment YAML manifest 
+3- Editing replicas number in the deployment YAML manifest: 
 ```
 kubectl apply -f deployment.yaml
 ```
-
+<br/><br/>
 
 
 ### 2.4. Understand the primitives used to create robust, self-healing, application deployments   
@@ -669,7 +710,7 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 
 #### Liveness Probes  
-Testing whether the container is running
+Testing whether the container is running.
 
 ```yaml
 apiVersion: v1
@@ -687,11 +728,12 @@ spec:
       initialDelaySeconds: 5  ## Delay before kubelet triggers 1st probe
       periodSeconds: 5        ## How ofter kubelet performs a liveness probe
 ```
+<br/>
 
 #### Startup Probes  
 Testing whether the application within the container is started.
-Useful for Pods that have containers that take a long time to come into service.
-allowing a time longer than the liveness interval would allow.
+* Useful for Pods that have containers that take a long time to come into service.
+* allowing a time longer than the liveness interval would allow.
 
 ```yaml
 apiVersion: v1
@@ -709,6 +751,7 @@ spec:
       failureThreshold: 30  ## Nb times try before restarting container
       periodSeconds: 10     ## How ofter kubelet performs a startup probe
 ```
+<br/>
 
 #### Readiness Probes   
 Testing whether a container is ready to start accepting traffic
@@ -729,6 +772,7 @@ spec:
       initialDelaySeconds: 5  ## Delay before kubelet triggers 1st probe
       periodSeconds: 5        ## How ofter kubelet performs probe
 ```
+<br/>
 
 #### Restart policy  
 https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy
@@ -750,7 +794,7 @@ spec:
 ```
 
 ##### OnFailure  
-Restart ONLY IF the container exits w an error code or determined unhealthy with liveness probe
+Restart ONLY IF the container exits w an error code or determined unhealthy with liveness probe.
 
 ```yaml
 apiVersion: v1
@@ -782,7 +826,7 @@ spec:
     command: ['sh', '-c', 'while true; do sleep 10; done']
     command: ['sh', '-c', 'bad command that should fail my container']
 ```
-
+<br/><br/>
 
 
 #### Multi-Container Pods  
@@ -816,6 +860,7 @@ spec:
   - name: sharedvol 
     emptyDir: {}
 ```
+<br/>
 
 ##### Init-Container  
 https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
@@ -844,7 +889,7 @@ spec:
     image: busybox:1.28
     command: ['sh', '-c', 'until nslookup shipping-svc; do echo waiting for shipping-svc; sleep 2; done']
 ```
-
+<br/><br/>
 
 
 ### 2.5. Understand how resource limits can affect Pod scheduling   
@@ -870,13 +915,13 @@ spec:
         memory: "128Mi"
         cpu: "500m"      
 ```
-  
+<br/>
   
 #### K8s Scheduling  
 https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/  
 https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/  
 
-Using nodeName = only run Pod on this specific node
+Using `nodeName`: only run the Pod on this specific node:
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -889,7 +934,7 @@ spec:
   nodeName: node1
 ```
 
-Using nodeSelector = run Pod on any node with matching label(s)
+Using `nodeSelector`: run the Pod on any node with matching label(s):
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -905,7 +950,7 @@ spec:
     disk: fast
 ```
 
-Label included in Node definition
+Obviously the label must be included in the node definition:
 ```yaml
 apiVersion: v1
 kind: Node
@@ -913,11 +958,11 @@ metadata:
   labels:
     disk: fast
 ```
-
+<br/>
 
 #### DaemonSets  
 https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/  
-A DaemonSet ensures that all (or some) Nodes run a copy of a Pod.
+A DaemonSet ensures that all (or some) nodes run a copy of a Pod.
 
 ```yaml
 apiVersion: apps/v1
@@ -939,7 +984,7 @@ spec:
       - name: nginx
         image: nginx
 ```
-
+<br/>
 
 #### Static Pods   
 https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/  
@@ -961,6 +1006,7 @@ Check result on the Control Plane:
 ```
 kubectl get pods
 ```
+<br/>
 
 ### 2.6. Awareness of manifest management and common templating tools   
 https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/
@@ -974,7 +1020,7 @@ https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/
   * https://kubernetes.io/blog/2018/05/29/introducing-kustomize-template-free-configuration-customization-for-kubernetes/ 
 
 
-
+<br/><br/>
 
 ## 3. Services & Networking 20%
 
@@ -982,7 +1028,10 @@ https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/
 https://kubernetes.io/docs/concepts/cluster-administration/networking/
 
 Each Pod has its own unique IP address within the cluster 
->> 1 virtual network allowing by default all pods to communicate with each other
+
+By default, a single virtual network exists allowing all pods to communicate with each other.
+
+<br/><br/>
 
 ### 3.2. Understand connectivity between Pods  
 By default, pods are non-isolated; they accept traffic from any source.
@@ -994,6 +1043,7 @@ If any networkPolicy selects a Pod, then the Pod is completely isolated and will
 * podSelector = which pod to apply the networkPolicy
 * ingress = into the Pod
 * egress = leaving the Pod
+<br/>
 
 ##### Default deny all ingress traffic 
 ```yaml
@@ -1006,6 +1056,7 @@ spec:
   policyTypes:
   - Ingress
 ```
+<br/>
 
 ##### Default allow all ingress traffic 
 ```yaml
@@ -1020,6 +1071,7 @@ spec:
   ingress:
   - {} #<-- means all
 ```
+<br/>
 
 ##### Sample Network Policy
 ```yaml
@@ -1059,6 +1111,7 @@ spec:
       port: 597
 ```
 
+<br/><br/>
 
 ### 3.3. Understand ClusterIP, NodePort, LoadBalancer service types and endpoints  
 https://kubernetes.io/docs/concepts/services-networking/service/
@@ -1072,6 +1125,7 @@ Service Types:
 * NodePort = expose apps outside cluster
 * LoadBalancer = expose apps outside using external load balancer (eg. AWS ALB…)
 * ExternalName (CKA out of scope)
+<br/>
 
 #### ClusterIP
 ```yaml
@@ -1089,6 +1143,7 @@ spec:
     protocol: TCP
     targetPort: 80  # pods are listening to this port
 ```
+<br/>
 
 #### NodePort
 ```yaml
@@ -1107,6 +1162,7 @@ spec:
     targetPort: 80  # pods are listening to this port
     nodePort: 30080 # all nodes listening to this port 
 ```
+<br/>
 
 #### DNS for Services and Pods   
 https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/
@@ -1125,20 +1181,19 @@ Each Service automatically gets a DNS name:
 
 DNS names can be used to access a service from any namespace
 
-
+<br/><br/>
 
 ### 3.4. Know how to use Ingress controllers and Ingress resources  
 https://kubernetes.io/docs/concepts/services-networking/ingress/
 https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
 
-Ingress manages external access to the services in a cluster, typically HTTP.
-Ingress may provide load balancing, SSL termination and name-based virtual hosting.
+Ingress objects manage external access to the services in a cluster, typically HTTP. 
 
-Requires an Ingress Controller
+* Ingress may provide load balancing, SSL termination and name-based virtual hosting.
+* Requires an Ingress Controller
+* Routing Rules with a set of Paths, each with a backend to a Service
+* If Service uses a Named Port, then Ingress can refer to the Named Port (‘web’) instead of number (’80’).
 
-Routing Rules with a set of Paths, each with a Backend >> Service
-
-If Service uses a Named Port, then Ingress can refer to the Named Port (‘web’) instead of number (’80’)
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -1160,6 +1215,7 @@ spec:
               number: 80
 ```
 
+<br/><br/>
 
 ### 3.5. Know how to configure and use CoreDNS  
 https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/
@@ -1175,11 +1231,12 @@ Each Pod is automatically assigned a DNS name:
 192-168-100-1.default.pod.cluster.local
 ```
 Each Service is automatically assigned a DNS name:
-```
+```json
 <service-name>.<namespace>.svc.<cluster-domain>
 svc-frontend.default.svc.cluster.local
 ```
-  
+
+<br/><br/>  
   
 ### 3.6. Choose an appropriate container network interface plugin  
 https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/
@@ -1189,14 +1246,25 @@ K8s nodes will remain “NotReady” until a network plugin is installed.
 Each CNI plugin has its own implementation and own installation procedure. 
 
 #### Calico
-Installing Calico
+https://docs.projectcalico.org/
+
+Installing Calico:
 ```
 kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
 ```
-  
-  
-  
-  
+<br/>
+
+#### Flannel
+https://github.com/flannel-io/flannel
+
+Installing Flannel:
+```
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+```
+
+<br/><br/>
+
+    
 ## 4. Storage 10%  
 
 ### 4.1. Understand storage classes, persistent volumes  
@@ -1213,7 +1281,7 @@ metadata:
 provisioner: kubernetes.io/no-provisioner # <--- no | AWS EBS | AzureFile | CephFS | FS | Local …
 allowVolumeExpansion: true                # <---- a PVC can only expand if this is set to true 
 ```
-  
+<br/>  
   
 #### Volumes  
 https://kubernetes.io/docs/concepts/storage/volumes/  
@@ -1231,6 +1299,7 @@ Volume type:
 * Cloud Storage
 * ConfigMaps & Secrets
 * Simple Directory on K8s node
+<br/>
 
 ```yaml
 ---
@@ -1275,7 +1344,7 @@ spec:
   - name: my-volume
     emptyDir: {}
 ```
-
+<br/>
 
 #### Persistent Volumes  
 https://kubernetes.io/docs/concepts/storage/persistent-volumes/  
@@ -1302,7 +1371,7 @@ spec:
   hostPath:
     path: /var/output
 ```  
-
+<br/>
 
 #### Types of Persistent Volumes
 
@@ -1331,7 +1400,7 @@ scaleIO | ScaleIO volume (deprecated)
 storageos | StorageOS volume
 vsphereVolume | vSphere VMDK volume
 
-
+<br/><br/>
 
 
 ### 4.2. Understand volume mode, access modes and reclaim policies for volumes  
@@ -1339,6 +1408,7 @@ vsphereVolume | vSphere VMDK volume
 #### volume mode  
 There are two ways PVs may be provisioned: statically or dynamically.
 
+<br/>
 
 #### Access mode   
 https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes
@@ -1363,6 +1433,7 @@ RWO - ReadWriteOnce
 ROX - ReadOnlyMany
 RWX - ReadWriteMany
 
+<br/>
 
 #### Reclaim Policies   
 https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reclaiming
@@ -1381,13 +1452,12 @@ spec:
   ...
 ```
   
-  
+<br/><br/>  
   
 ### 4.3. Understand persistent volume claims primitive  
 https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reserving-a-persistentvolume  
 
-PersistentVolumeClaim object = user’s request w attributes 
-Bound to a PersistentVolume based on a matching StorageClass
+P`ersistentVolumeClaim` object is a user’s request with attributes. It is bound to a `PersistentVolume` based on a matching `StorageClass`.
 
 ```yaml
 apiVersion: v1
@@ -1403,15 +1473,14 @@ spec:
       storage: 100Mi
 ```
 
-“Expand” a PVC = edit spec.resource.request.storage attribute of existing PVC
-(must support allowVolumeExpansion = true in the StorageClass definition)
+“Expand” a PVC = edit `spec.resource.request.storage` attribute of existing PVC. (must support `allowVolumeExpansion=true` in the `StorageClass` definition)
 
-
+<br/><br/>
 
 ### 4.4 Know how to configure applications with persistent storage   
 https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 
-Using PVC in a Pod
+Using PVC in a Pod:
 
 ```yaml
 apiVersion: v1
@@ -1432,7 +1501,7 @@ spec:
         claimName: my-pvc
 ```
 
-
+<br/><br/>
 
 
 ## 5. Troubleshooting 30%  
