@@ -1,5 +1,6 @@
 # Certified Kubernetes Associate (CKA) Study Guide  
 This is my study guide for the Certified Kubernetes Associate (CKA) exam.  
+https://www.cncf.io/certification/cka/  
 
 <p align="center">
   <img src="https://www.cncf.io/wp-content/uploads/2020/08/logo_cka_whitetext-2-500x500.png">
@@ -7,7 +8,9 @@ This is my study guide for the Certified Kubernetes Associate (CKA) exam.
 <br/>
 
 #### CKA Curriculum  
-https://www.cncf.io/certification/cka/  
+
+Updated exam curriculum for v1.20
+https://github.com/cncf/curriculum/
 
 Domain	| Weight
 ------- | -------------
@@ -50,10 +53,35 @@ K8s version 1.20 (Jan 22, 2021)
  
 <br/>
 
+#### Kubernetes Documentation
+- Main Documentation page:
+https://kubernetes.io/docs/
+
+- One-page API Reference for Kubernetes v1.20
+https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/
+
+- Cheat Sheet:
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+<br/>
+
 #### ACG Training  
-Excellent course with A Cloud Guru:
+- Excellent course with A Cloud Guru:
 https://learn.acloud.guru/course/certified-kubernetes-administrator/  
 by William Boyd
+
+<br/>
+
+#### CKA Exercises
+
+- Chad M. Crowell
+https://github.com/chadmcrowell/CKA-Exercises
+
+- David-VTUK
+https://github.com/David-VTUK/CKA-StudyGuide/
+
+- stretchcloud
+https://github.com/stretchcloud/cka-lab-practice
 
 <br/><br/>
 
