@@ -27,15 +27,29 @@ https://github.com/stretchcloud/cka-lab-practice
 Updated exam curriculum for v1.20
 https://github.com/cncf/curriculum/
 
+
 Domain	| Weight
 ------- | -------------
 **1. Cluster Architecture, Installation & Configuration**	| 25%  
-   [1.1. Manage role based access control (RBAC)](README.md#11-manage-role-based-access-control-rbac) |  
-   [1.2. Use Kubeadm to install a basic cluster](README.md#11-use-kubeadm-to-install-a-basic-cluster) |  
-   [1.3. Manage a highly-available Kubernetes cluster](README.md#13-manage-a-highly-available-kubernetes-cluster) |  
-   [1.4. Provision underlying infrastructure to deploy a Kubernetes cluster](README.md#14-provision-underlying-infrastructure-to-deploy-a-kubernetes-cluster) |  
-   [1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm](README.md#15-perform-a-version-upgrade-on-a-kubernetes-cluster-using-kubeadm) |  
-   [1.6. Implement etcd backup and restore](README.md#16-implement-etcd-backup-and-restore) |  
+[1.1. Manage role based access control (RBAC)](README.md#11-manage-role-based-access-control-rbac) |  
+[1.2. Use Kubeadm to install a basic cluster](README.md#11-use-kubeadm-to-install-a-basic-cluster) |  
+[1.3. Manage a highly-available Kubernetes cluster](README.md#13-manage-a-highly-available-kubernetes-cluster) |  
+[1.4. Provision underlying infrastructure to deploy a Kubernetes cluster](README.md#14-provision-underlying-infrastructure-to-deploy-a-kubernetes-cluster) |  
+[1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm](README.md#15-perform-a-version-upgrade-on-a-kubernetes-cluster-using-kubeadm) |  
+[1.6. Implement etcd backup and restore](README.md#16-implement-etcd-backup-and-restore) |
+
+
+
+
+Domain	| Weight
+------- | -------------
+**1. Cluster Architecture, Installation & Configuration**	| 25%  
+[1.1. Manage role based access control (RBAC)](README.md#11-manage-role-based-access-control-rbac) |  
+[1.2. Use Kubeadm to install a basic cluster](README.md#11-use-kubeadm-to-install-a-basic-cluster) |  
+[1.3. Manage a highly-available Kubernetes cluster](README.md#13-manage-a-highly-available-kubernetes-cluster) |  
+[1.4. Provision underlying infrastructure to deploy a Kubernetes cluster](README.md#14-provision-underlying-infrastructure-to-deploy-a-kubernetes-cluster) |  
+[1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm](README.md#15-perform-a-version-upgrade-on-a-kubernetes-cluster-using-kubeadm) |  
+[1.6. Implement etcd backup and restore](README.md#16-implement-etcd-backup-and-restore) |  
 **2. Workloads & Scheduling**	| 15%  
 [2.1. Understand deployments and how to perform rolling update and rollbacks](README.md#21-understand-deployments-and-how-to-perform-rolling-update-and-rollbacks) |  
 [2.2. Use ConfigMaps and Secrets to configure applications](README.md#22-use-configmaps-and-secrets-to-configure-applications) |  
