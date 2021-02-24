@@ -51,6 +51,18 @@ Domain	| Weight
 3.4. Know how to use Ingress controllers and Ingress resources	|
 3.5. Know how to configure and use CoreDNS	|
 3.6. Choose an appropriate container network interface plugin  |
+[**4. Storage**](CKA-4-Storage.md)	| 10%
+4.1. Understand storage classes, persistent volumes	 |
+4.2. Understand volume mode, access modes and reclaim policies for volumes	|
+4.3. Understand persistent volume claims primitive	|
+4.4 Know how to configure applications with persistent storage  |
+[**5. Troubleshooting**](CKA-5-Troubleshooting.md) |	30%
+5.1. Evaluate cluster and node logging	|
+5.2. Understand how to monitor applications	 |
+5.3. Manage container stdout & stderr logs	|
+5.4. Troubleshoot application failure	 |
+5.5. Troubleshoot cluster component failure	 |
+5.6 Troubleshoot networking  |
 
 </br>
 </br>
