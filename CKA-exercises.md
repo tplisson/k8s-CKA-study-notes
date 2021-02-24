@@ -6,7 +6,7 @@
 
 
 ## 1. Cluster Architecture, Installation & Configuration**	| 25%  
-## 1.1. Manage role based access control (RBAC)
+### 1.1. Manage role based access control (RBAC)
 
 Create a Pod able to get a list of Pods running in the default namespace.
 You'll need to create a serviceAccount, a Role and a roleBinding, then use the following CURL command in your Pod:
@@ -135,7 +135,7 @@ If it fails, you'd get this:
 </details>
 <br/>
 
-## 1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm
+### 1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm
 
 Upgrade your cluster to Kubernetes version 1.20.2 using Kubeadm.
 
@@ -184,10 +184,28 @@ kubectl get nodes
 </details>
 <br/>
 
-#### 2. Workloads & Scheduling	| 15%  
-##### 2.1. Understand deployments and how to perform rolling update and rollbacks
-##### 2.2. Use ConfigMaps and Secrets to configure applications
-##### 2.3. Know how to scale applications
+## 2. Workloads & Scheduling	| 15%  
+### 2.1. Understand deployments and how to perform rolling update and rollbacks
+Excercise
+<details><summary>show solution</summary>
+<p>
+```
+```
+</p>
+</details>
+<br/>
+
+### 2.2. Use ConfigMaps and Secrets to configure applications
+Excercise
+<details><summary>show solution</summary>
+<p>
+```
+```
+</p>
+</details>
+<br/>
+
+### 2.3. Know how to scale applications
 
 Excercise
 <details><summary>show solution</summary>
