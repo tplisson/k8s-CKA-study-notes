@@ -7,11 +7,16 @@ https://www.cncf.io/certification/cka/
 </p>
 <br/>
 
+**2Hrs | Cost $300 | [Online Exam](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/)**
+**K8s version 1.20 (Jan 22, 2021)**
+ 
+<br/>
+
 ## CKA Exercises
 
-[CKA Exercises](CKA-exercises.md)
+### [My CKA Exercises](CKA-exercises.md)
 
-##### Other CKA Exercises  
+### Other CKA Exercises  
 - Chad M. Crowell
 https://github.com/chadmcrowell/CKA-Exercises
 
@@ -21,16 +26,51 @@ https://github.com/David-VTUK/CKA-StudyGuide/
 - stretchcloud
 https://github.com/stretchcloud/cka-lab-practice
 
+<br/>
 
-#### CKA Curriculum  
+## CKA Curriculum  
 
 Updated exam curriculum for v1.20
 https://github.com/cncf/curriculum/
 
 
+<link rel='stylesheet' id='main-css' href='https://www.cncf.io/wp-content/themes/lf-theme/build/styles.min.css?ver=1614120832' type='text/css' media='all'/>
+
+<figure class="wp-block-table is-style-pricing-table is-style-regular">
+    <table>
+        <tbody>
+            <tr>
+                <td>Domain</td>
+                <td>Weight</td>
+            </tr>
+            <tr>
+                <td><a href="CKA-1-Cluster-Architecture-Installation.md">Cluster Architecture, Installation &amp; Configuration</a></td>
+                <td>25%</td>
+            </tr>
+            <tr>
+                <td><a href="CKA-CKA-2-Workloads-Scheduling.md">Workloads &amp; Scheduling</a></td>
+                <td>15%</td>
+            </tr>
+            <tr>
+                <td><a href="CKA-CKA-3.md">Services &amp; Networking</a></td>
+                <td>20%</td>
+            </tr>
+            <tr>
+                <td><a href="CKA-CKA-4-Workloads-Scheduling.md">Storage</a></td>
+                <td>10%</td>
+            </tr>
+            <tr>
+                <td><a href="CKA-CKA-4-Workloads-Scheduling.md">Troubleshooting</a></td>
+                <td>30%</td>
+            </tr>
+        </tbody>
+    </table>
+</figure>
+<br/>
+
 Domain	| Weight
 ------- | -------------
-[**1. Cluster Architecture, Installation & Configuration**](CKA-1-Cluster-Architecture-Installation.md)	| 25%  
+[1. Cluster Architecture, Installation & Configuration](CKA-1-Cluster-Architecture-Installation.md)	| 25%  
 1.1. Manage role based access control (RBAC)	|
 1.2. Use Kubeadm to install a basic cluster	|
 1.3. Manage a highly-available Kubernetes cluster	|
@@ -64,19 +104,8 @@ Domain	| Weight
 5.5. Troubleshoot cluster component failure	 |
 5.6 Troubleshoot networking  |
 
-</br>
-</br>
-
-
-Domain	| Weight
-------- | -------------
- 
- 
-
-2Hrs | Cost $300 | [Online Exam](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/)
-K8s version 1.20 (Jan 22, 2021)
- 
 <br/>
+
 
 #### Kubernetes Documentation
 - Main Documentation page:
@@ -91,20 +120,8 @@ https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 <br/>
 
 #### ACG Training  
-- Excellent course with A Cloud Guru:
+- Great course from "A Cloud Guru":
 https://learn.acloud.guru/course/certified-kubernetes-administrator/  
 by William Boyd
 
 <br/>
-
-
-
-<br/><br/>
-
-
-<br/><br/>
-
-    
-
-<br/><br/>
-
