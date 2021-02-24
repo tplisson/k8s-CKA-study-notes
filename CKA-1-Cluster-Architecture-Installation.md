@@ -10,6 +10,7 @@ Domain	| Weight
 [1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm](CKA-1-Cluster-Architecture-Installation.md#15-perform-a-version-upgrade-on-a-kubernetes-cluster-using-kubeadm) |  
 [1.6. Implement etcd backup and restore](CKA-1-Cluster-Architecture-Installation.md#16-implement-etcd-backup-and-restore) |
 
+<br/><br/>
 
 ## 1.1. Manage Role-Based Access Control (RBAC)  
 https://kubernetes.io/docs/reference/access-authn-authz/rbac/  

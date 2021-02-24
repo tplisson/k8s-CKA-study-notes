@@ -1,7 +1,9 @@
-# CKA Exercises
+# CKA Lab Exercises
 
-[1. Cluster Architecture, Installation & Configuration - 25%](CKA-exercises.md#1-cluster-architecture-installation--configuration-25)  
-[2. Workloads & Scheduling - 15%](CKA-exercises.md#2-workloads--scheduling-15)  
+Domain	| Weight
+------- | -------------
+[1. Cluster Architecture, Installation & Configuration](CKA-exercises.md#1-cluster-architecture-installation--configuration-25)  |  25%  
+[2. Workloads & Scheduling](CKA-exercises.md#2-workloads--scheduling-15)  |  15%  
 
 
 
