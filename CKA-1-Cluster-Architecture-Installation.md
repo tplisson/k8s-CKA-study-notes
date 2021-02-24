@@ -1,6 +1,17 @@
-## 1. Cluster Architecture, Installation & Configuration 25%
+# 1. Cluster Architecture, Installation & Configuration 25%
 
-### 1.1. Manage Role-Based Access Control (RBAC)  
+Domain	| Weight
+------- | -------------
+[**1. Cluster Architecture, Installation & Configuration**](CKA-1-Cluster-Architecture-Installation.md#1-cluster-architecture-installation--configuration-25)	| 25%  
+[1.1. Manage role based access control (RBAC)](CKA-1-Cluster-Architecture-Installation.md#11-manage-role-based-access-control-rbac) |  
+[1.2. Use Kubeadm to install a basic cluster](CKA-1-Cluster-Architecture-Installation.md#11-use-kubeadm-to-install-a-basic-cluster) |  
+[1.3. Manage a highly-available Kubernetes cluster](CKA-1-Cluster-Architecture-Installation.md#13-manage-a-highly-available-kubernetes-cluster) |  
+[1.4. Provision underlying infrastructure to deploy a Kubernetes cluster](CKA-1-Cluster-Architecture-Installation.md#14-provision-underlying-infrastructure-to-deploy-a-kubernetes-cluster) |  
+[1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm](CKA-1-Cluster-Architecture-Installation.md#15-perform-a-version-upgrade-on-a-kubernetes-cluster-using-kubeadm) |  
+[1.6. Implement etcd backup and restore](CKA-1-Cluster-Architecture-Installation.md#16-implement-etcd-backup-and-restore) |
+
+
+## 1.1. Manage Role-Based Access Control (RBAC)  
 https://kubernetes.io/docs/reference/access-authn-authz/rbac/  
 
 Role-based access control (RBAC) is a method of regulating access to resources based on the roles of individual users.
@@ -12,7 +23,7 @@ Objects:
     * in the whole cluster  
 <br/>
 
-#### Role
+### Role
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -31,7 +42,7 @@ kubectl explain role --recursive
 ```  
 <br/>
 
-#### RoleBinding
+### RoleBinding
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -57,7 +68,7 @@ kubectl explain rolebinding --recursive
 
 <br/><br/>
 
-#### Service Accounts
+### Service Accounts
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
 
 Service Accounts are accounts used by container processes within Pods to authenticate and control access to K8s APIs.
@@ -99,7 +110,7 @@ kubectl explain sa --recursive
 
 <br/><br/>
 
-### 1.2. Use Kubeadm to install a basic cluster  
+## 1.2. Use Kubeadm to install a basic cluster  
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
 
 Kubeadm is a tool to simplify building K8s clusters
@@ -130,10 +141,10 @@ sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-has
 
 <br/><br/>
 
-### 1.3. Manage a highly-available Kubernetes cluster  
+## 1.3. Manage a highly-available Kubernetes cluster  
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/  
 
-#### Control Plane HA   
+### Control Plane HA   
 Deploy K8s control plane on multiple nodes & ensure that a single node failure does not impact the cluster’s control plane functions.
 
 - node#1: kube-api-server	
@@ -147,7 +158,7 @@ Load Balancer schedules tasks across redundant nodes
 
 <br/>
 
-#### Etcd Data Store  
+### Etcd Data Store  
 
 - Stacked Etcd  
   - Etcd runs on each control plane nodes  
@@ -156,17 +167,17 @@ Load Balancer schedules tasks across redundant nodes
   
 <br/><br/>
 
-### 1.4. Provision underlying infrastructure to deploy a Kubernetes cluster
+## 1.4. Provision underlying infrastructure to deploy a Kubernetes cluster
 <br/>
 
-#### K8s Installation
+### K8s Installation
 [k8s-install-base-docker.sh](https://gist.github.com/tplisson/1bb67b45d4c92d83b22a6d1e20771234)  
 [k8s-install-base-containerd.sh](https://gist.github.com/tplisson/caaf5ce57a95d6b3cd6af3d5b53aa15f)  
 [Centos w kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)  
 
 <br/>
 
-#### Install Container Runtime
+### Install Container Runtime
 Install Docker Engine  
 https://docs.docker.com/engine/install/
 
@@ -175,7 +186,7 @@ https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-ku
 
 <br/>
 
-#### Management Tools
+### Management Tools
 https://kubernetes.io/docs/reference/tools/)  
 
 * [kubectl](https://kubernetes.io/docs/reference/kubectl/)  
@@ -193,7 +204,7 @@ https://kubernetes.io/docs/reference/tools/)
   * https://kubernetes.io/blog/2018/05/29/introducing-kustomize-template-free-configuration-customization-for-kubernetes/  
 
 
-#### Kubectl autocomplete 
+### Kubectl autocomplete 
 BASH
 ```
 source <(kubectl completion bash)
@@ -203,7 +214,7 @@ complete -F __start_kubectl k
 
 <br/><br/>
 
-### 1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm 
+## 1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm 
 https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/  
 
 Overview:
@@ -230,7 +241,7 @@ Overview:
 
 <br/>
 
-#### [Draining a node](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)  
+### [Draining a node](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)  
 To remove a node from service for upgrade or maintenance = gracefully terminate / move containers to other nodes
 
 Drain a node
@@ -246,7 +257,7 @@ kubectl uncordon <node-name>
 
 <br/>
 
-#### Control Plane Nodes Upgrade
+### Control Plane Nodes Upgrade
 
 Upgrade Kubeadm to 1.20.2
 ```
@@ -272,7 +283,7 @@ sudo systemctl restart kubelet
 ```
 <br/>
 
-#### Worker Nodes Upgrades
+### Worker Nodes Upgrades
 
 Upgrade Kubeadm to 1.20.2
 ```
@@ -295,7 +306,7 @@ sudo systemctl restart kubelet
 
 <br/>
 
-### 1.6. Implement Etcd backup and restore 
+## 1.6. Implement Etcd backup and restore 
 https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/  
 
 [`etcd`](https://github.com/etcd-io/etcd) is a distributed reliable key-value store used as the backend data storage for K8s clusters. All k8s objects, applications and configurations are stored in etcd.
@@ -353,7 +364,7 @@ $ etcdctl member list --write-out=table
 ```
 <br/>
 
-#### Backing up Etcd
+### Backing up Etcd
 
 Basics
 ```
@@ -369,7 +380,7 @@ etcdctl snapshot save etcd_backup.db
 etcdctl snapshot status etcd_backup.db --write-out=table 
 ```
 
-#### Restoring an Etcd backup 
+### Restoring an Etcd backup 
 
 This creates a temporary logical cluster to repopulate data
 
