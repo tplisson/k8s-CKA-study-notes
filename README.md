@@ -7,6 +7,21 @@ https://www.cncf.io/certification/cka/
 </p>
 <br/>
 
+## CKA Exercises
+
+[CKA Exercises](CKA-exercises.md)
+
+##### Other CKA Exercises  
+- Chad M. Crowell
+https://github.com/chadmcrowell/CKA-Exercises
+
+- David-VTUK
+https://github.com/David-VTUK/CKA-StudyGuide/
+
+- stretchcloud
+https://github.com/stretchcloud/cka-lab-practice
+
+
 #### CKA Curriculum  
 
 Updated exam curriculum for v1.20
@@ -72,16 +87,7 @@ by William Boyd
 
 <br/>
 
-#### CKA Exercises
 
-- Chad M. Crowell
-https://github.com/chadmcrowell/CKA-Exercises
-
-- David-VTUK
-https://github.com/David-VTUK/CKA-StudyGuide/
-
-- stretchcloud
-https://github.com/stretchcloud/cka-lab-practice
 
 <br/><br/>
 
@@ -90,13 +96,13 @@ https://github.com/stretchcloud/cka-lab-practice
 ### 1.1. Manage Role-Based Access Control (RBAC)  
 https://kubernetes.io/docs/reference/access-authn-authz/rbac/  
 
-Role-based access control (RBAC) = a method of regulating access to resources based on the roles of individual users 
+Role-based access control (RBAC) is a method of regulating access to resources based on the roles of individual users.
 
 Objects: 
 * **Role** (what permissions) <— **RoleBinding** (which users)  
-    * in namespace  
+    * in a namespace  
 * **ClusterRole** <— **ClusterRoleBinding**  
-    * in whole cluster  
+    * in the whole cluster  
 <br/>
 
 #### Role
@@ -147,7 +153,7 @@ kubectl explain rolebinding --recursive
 #### Service Accounts
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
 
-Service Accounts are accounts used by container processes within pods to authenticate and control access to K8s APIs
+Service Accounts are accounts used by container processes within Pods to authenticate and control access to K8s APIs.
 
 ```yaml
 Service Account
