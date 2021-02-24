@@ -1,6 +1,9 @@
 # CKA Exercises
 
-[1. Cluster Architecture, Installation & Configuration**	| 25%](CKA-exercises#Cluster-Architecture-Installation-&-Configuration)
+[1. Cluster Architecture, Installation & Configuration - 25%](CKA-exercises.md#1-cluster-architecture-installation--configuration-25)  
+[2. Workloads & Scheduling - 15%](CKA-exercises.md#2-workloads--scheduling-15)  
+
+
 
 ## 1. Cluster Architecture, Installation & Configuration**	| 25%  
 ## 1.1. Manage role based access control (RBAC)
@@ -181,7 +184,7 @@ kubectl get nodes
 </details>
 <br/>
 
-#### 2. Workloads & Scheduling**	| 15%  
+#### 2. Workloads & Scheduling	| 15%  
 ##### 2.1. Understand deployments and how to perform rolling update and rollbacks
 ##### 2.2. Use ConfigMaps and Secrets to configure applications
 ##### 2.3. Know how to scale applications
