@@ -38,7 +38,7 @@ https://github.com/cncf/curriculum/
 
 **Domain**	| **Weight**
 ------- | -------------
-[1. Cluster Architecture, Installation & Configuration](CKA-1-Cluster-Architecture-Installation.md)	| 25%  
+[**1. Cluster Architecture, Installation & Configuration**](CKA-1-Cluster-Architecture-Installation.md)	| 25%  
 1.1. Manage role based access control (RBAC)	|
 1.2. Use Kubeadm to install a basic cluster	|
 1.3. Manage a highly-available Kubernetes cluster	|
