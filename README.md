@@ -75,7 +75,7 @@ https://github.com/cncf/curriculum/
 <br/>
 
 
-#### Kubernetes Documentation
+## Kubernetes Documentation
 - Main Documentation page:  
 https://kubernetes.io/docs/
 
@@ -87,7 +87,7 @@ https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 
 <br/>
 
-#### ACG Training  
+## ACG Training  
 - Great course from "A Cloud Guru":  
 https://learn.acloud.guru/course/certified-kubernetes-administrator/  
 by William Boyd
