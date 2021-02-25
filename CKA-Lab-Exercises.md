@@ -2,12 +2,12 @@
 
 Domain	| Weight
 ------- | -------------
-[1. Cluster Architecture, Installation & Configuration](CKA-exercises.md#1-cluster-architecture-installation--configuration-25)  |  25%  
-[2. Workloads & Scheduling](CKA-exercises.md#2-workloads--scheduling-15)  |  15%  
+[1. Cluster Architecture, Installation & Configuration](CKA-Lab-Exercises.md#1-cluster-architecture-installation--configuration-25)  |  25%  
+[2. Workloads & Scheduling](CKA-Lab-Exercises.md#2-workloads--scheduling-15)  |  15%  
 
 
 
-## 1. Cluster Architecture, Installation & Configuration**	| 25%  
+## 1. Cluster Architecture, Installation & Configuration - 25%  
 ### 1.1. Manage role based access control (RBAC)
 
 #### Excercise 1  
