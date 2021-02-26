@@ -340,29 +340,28 @@ kubectl create deploy nginx --image=nginx:1.19.6 --replicas=3
 ```
 Deployment YAML file:
 ```yaml
-apiVersion: v1
-items:
-- apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    labels:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
       app: nginx
-    name: nginx
-    namespace: default
-  spec:
-    replicas: 3
-    selector:
-      matchLabels:
+  template:
+    metadata:
+      labels:
         app: nginx
-    template:
-      metadata:
-        labels:
-          app: nginx
-      spec:
-        containers:
-        - name: nginx
-          image: nginx:1.19.6      
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.19.6      
 ```
+
 Verify:
 ```
 kubectl get deploy nginx -o wide
@@ -393,7 +392,6 @@ vi patch.yml
 
 ```
 kubectl patch deploy nginx --patch-file=patch.yml
-
 ```
 Verify:
 ```
@@ -445,23 +443,273 @@ kubectl get deploy nginx -o wide
 
 ### 2.2. Use ConfigMaps and Secrets to configure applications
 
-#### Excercise 1 - 
+#### Excercise 3 - Create Secrets and use it in a Pod's environment
+Create a simple opaque Secret to store a username `lab` and a password `lab123`.
+Create a Pod that can use the secrets as environment variables.
+
 <details><summary>show solution</summary>
 <p>
+Create the generic Secret:
 ```
+kubectl create secret generic lab --from-literal=username=lab --from-literal=password=lab123
+```
+
+```yaml
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: lab
+  namespace: default
+data:
+  username: bGFi
+  password: bGFiMTIz
+```
+```
+echo -n lab | base64
+echo -n lab123 | base64
+```
+
+Create the Pod:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lab
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ["/bin/sh", "-c", "env | grep lab"]
+    envFrom:
+      - secretRef:
+          name: lab
+```
+Or (a bit more complicated):
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lab
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ["/bin/sh", "-c", "env | grep lab"]
+    env:
+      - name: USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: lab
+            key: username
+      - name: PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: lab
+            key: password
+```
+Verify
+```
+kubectl get po
+kubectl logs lab
+```
+
+</p>
+</details>
+<br/>
+
+#### Excercise 2 - Using ConfigMaps for an NGINX deployment
+Create a NGINX deployment using a custom configuration file and a customer index.html file (described below). The deployment should include 3 replicas.
+Create a Service that will expose its Pods on port 30080 of each cluster node.
+
+<details><summary>show configuration files</summary>
+<p>
+index.html:
+
+```
+<html>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;700&display=swap" rel="stylesheet">
+<head>
+  <title>CKA Website</title>
+</head>
+<body>
+<h1 align="center" style="font-family:Ubuntu">WELCOME TO YOUR CKA WEBSITE</h1>
+<p align="center">
+  <img src="https://www.cncf.io/wp-content/uploads/2020/08/logo_cka_whitetext-2-500x500.png">
+</p>
+<br/><br/>
+<p>This is the Server's IP address: $server_addr</p>
+<br/>
+</body>
+</html>
+```
+
+nginx.conf:
+
+```
+user nginx;
+worker_processes  1;
+events {
+  worker_connections  10240;
+}
+http {
+  server {
+      listen       80;
+      server_name  localhost;
+      location / {
+        root   /config;
+        index  index.html index.htm;
+    }
+  }
+}
 ```
 </p>
 </details>
 <br/>
 
-#### Excercise 2 - 
 <details><summary>show solution</summary>
 <p>
+
+Create a configMap for both the nginx.conf and index.html files:
 ```
+k create cm nginx-static --from-file=index.html --from-file=nginx.conf
 ```
+
+```yaml
+Name:         nginx-static
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+
+Data
+====
+index.html:
+----
+<html>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;700&display=swap" rel="stylesheet">
+<head>
+  <title>CKA Website</title>
+</head>
+<body>
+<h1 align="center" style="font-family:Ubuntu">WELCOME TO YOUR CKA WEBSITE</h1>
+<p align="center">
+  <img src="https://www.cncf.io/wp-content/uploads/2020/08/logo_cka_whitetext-2-500x500.png">
+</p>
+<br/>
+</body>
+</html>
+
+nginx.conf:
+----
+user nginx;
+worker_processes  1;
+events {
+  worker_connections  10240;
+}
+http {
+  server {
+      listen       80;
+      server_name  localhost;
+      location / {
+        root   /config;
+        index  index.html index.htm;
+    }
+  }
+}
+```
+Verify
+```
+kubectl get cm nginx-static
+kubectl describe cm nginx-static
+```
+
+Create the NGINX deployment using the configMap data:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-static
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-static
+  template:
+    metadata:
+      labels:
+        app: nginx-static
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+            - name: index
+              mountPath: /config/index.html
+              subPath: index.html
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: nginx-static
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+        - name: index
+          configMap:
+            name: nginx-static
+            items:
+              - key: index.html
+                path: index.html
+```
+Verify
+```
+kubectl get deploy nginx-static
+kubectl get po -l app=nginx-static
+```
+
+Create a Service 
+
+```
+kubectl create service nodeport nginx-static --tcp=80:80 --node-port=30080
+```
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx-static
+  name: nginx-static
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    app: nginx-static
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30088
+```
+Verify
+```
+kubectl get svc nginx-static -o wide
+kubectl get ep nginx-static
+kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
+```
+
 </p>
 </details>
 <br/>
+
 
 
 ### 2.3. Know how to scale applications
