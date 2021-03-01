@@ -77,13 +77,17 @@ https://github.com/cncf/curriculum/
 
 ## Kubernetes Documentation
 - Main Documentation page:  
-https://kubernetes.io/docs/
-
-- One-page API Reference for Kubernetes v1.20  
-https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/
-
+https://kubernetes.io/docs/  
+  
 - Cheat Sheet:  
-https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/  
+
+- `kubectl` Command Reference
+https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands  
+  
+- One-page API Reference for Kubernetes v1.20  
+https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/  
+  
 
 <br/>
 
@@ -91,5 +95,28 @@ https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 - Great course from "A Cloud Guru":  
 https://learn.acloud.guru/course/certified-kubernetes-administrator/  
 by William Boyd
+
+## CKA Exam Tips
+- **Time management is paramount!**
+  - You have 15-20 performance-based tasks to perform in 2 hours, so an average of 6-8 min per task. Some tasks are easy but some others will take much more time.
+  - Get all questions done: 
+    - Make sure to go through all 15-20 tasks
+    - Get all the easiest tasks done first!
+  - Never get stuck: 
+    - If a task is seems difficult or it's taking you more than 2-3 min, then flag it and keep moving to get any easy task done first. 
+    - Then go back to each of the flagged tasks afterwards.
+<br/>
+
+- Use `kubectl` [shortnames](https://kubernetes.io/docs/reference/kubectl/overview/#resource-types): 
+  - `no` `po` `ns` `deploy` `svc` `ing` `ds` `netpol` `pv` `pvc` `sa` `cm` `ep` `sc` ...
+<br/>
+
+- Use [imperative commands](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#create) whenever possible:
+  - E.g. use: `kubectl create service -h`,
+  - instead of: `kubectl apply -f <filename.yaml>`
+<br/>  
+
+- Use `kubectl explain` to [list the fields of supported API resources](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#explain)
+
 
 <br/>
