@@ -22,6 +22,9 @@ https://github.com/tplisson/k8s-CKA-study-guide/blob/main/CKA-Lab-Exercises.md
 - Chad M. Crowell  
 https://github.com/chadmcrowell/CKA-Exercises
 
+- Ashutosh  
+https://github.com/ashutoshvct/k8s/tree/master/cka-exam
+
 - David-VTUK  
 https://github.com/David-VTUK/CKA-StudyGuide/
 

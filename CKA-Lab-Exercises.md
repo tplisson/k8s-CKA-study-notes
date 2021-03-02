@@ -443,17 +443,34 @@ kubectl get deploy nginx -o wide
 
 ### 2.2. Use ConfigMaps and Secrets to configure applications
 
-#### Excercise 3 - Create Secrets and use it in a Pod's environment
+#### Excercise 1 - Create simple ConfigMaps and secrets and use those in a Pod
+
 Create a simple opaque Secret to store a username `lab` and a password `lab123`.
 Create a Pod that can use the secrets as environment variables.
 
 <details><summary>show solution</summary>
 <p>
-Create the generic Secret:
+Create the generic Secret
+
+Imperative method:    
 ```
 kubectl create secret generic lab --from-literal=username=lab --from-literal=password=lab123
 ```
 
+#### Excercise 2 - Create Secrets and use it in a Pod's environment
+Create a simple opaque Secret to store a username `lab` and a password `lab123`.
+Create a Pod that can use the secrets as environment variables.
+
+<details><summary>show solution</summary>
+<p>
+Create the generic Secret
+
+Imperative method:    
+```
+kubectl create secret generic lab --from-literal=username=lab --from-literal=password=lab123
+```
+
+Declarative method:  
 ```yaml
 apiVersion: v1
 kind: Secret
@@ -519,7 +536,7 @@ kubectl logs lab
 </details>
 <br/>
 
-#### Excercise 2 - Using ConfigMaps for an NGINX deployment
+#### Excercise 3 - Using ConfigMaps for an NGINX deployment
 Create a NGINX deployment using a custom configuration file and a customer index.html file (described below). The deployment should include 3 replicas.
 Create a Service that will expose its Pods on port 30080 of each cluster node.
 
@@ -572,11 +589,14 @@ http {
 <details><summary>show solution</summary>
 <p>
 
-Create a configMap for both the nginx.conf and index.html files:
+Create a configMap for both the nginx.conf and index.html files
+
+Imperative method:  
 ```
 k create cm nginx-static --from-file=index.html --from-file=nginx.conf
 ```
 
+Declarative method:  
 ```yaml
 Name:         nginx-static
 Namespace:    default
@@ -676,10 +696,12 @@ kubectl get po -l app=nginx-static
 
 Create a Service 
 
+Imperative method:    
 ```
 kubectl create service nodeport nginx-static --tcp=80:80 --node-port=30080
 ```
 
+Declarative method:    
 ```yaml
 apiVersion: v1
 kind: Service
@@ -699,7 +721,7 @@ spec:
     targetPort: 80
     nodePort: 30088
 ```
-Verify
+Verify  
 ```
 kubectl get svc nginx-static -o wide
 kubectl get ep nginx-static
@@ -718,6 +740,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 <details><summary>show solution</summary>
 <p>
 ```
+
 ```
 </p>
 </details>
@@ -727,6 +750,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 <details><summary>show solution</summary>
 <p>
 ```
+
 ```
 </p>
 </details>
@@ -739,6 +763,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 <details><summary>show solution</summary>
 <p>
 ```
+
 ```
 </p>
 </details>
@@ -748,6 +773,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 <details><summary>show solution</summary>
 <p>
 ```
+
 ```
 </p>
 </details>
@@ -759,6 +785,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 <details><summary>show solution</summary>
 <p>
 ```
+
 ```
 </p>
 </details>
@@ -768,6 +795,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 <details><summary>show solution</summary>
 <p>
 ```
+
 ```
 </p>
 </details>
@@ -779,6 +807,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 <details><summary>show solution</summary>
 <p>
 ```
+
 ```
 </p>
 </details>
@@ -788,6 +817,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 <details><summary>show solution</summary>
 <p>
 ```
+
 ```
 </p>
 </details>
