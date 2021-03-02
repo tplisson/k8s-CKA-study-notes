@@ -556,8 +556,6 @@ index.html:
 <p align="center">
   <img src="https://www.cncf.io/wp-content/uploads/2020/08/logo_cka_whitetext-2-500x500.png">
 </p>
-<br/><br/>
-<p>This is the Server's IP address: $server_addr</p>
 <br/>
 </body>
 </html>
