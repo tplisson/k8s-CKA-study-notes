@@ -19,6 +19,11 @@ https://github.com/tplisson/k8s-CKA-study-guide/blob/main/CKA-Lab-Exercises.md
 
 
 ### Other CKA Lab Exercises  
+- killer.sh_ 
+  https://killer.sh/cka
+  - not free but worth it
+  - 29.99€ for 2 CKA sessions of the same mock exam  
+  
 - Chad M. Crowell  
 https://github.com/chadmcrowell/CKA-Exercises
 

@@ -334,12 +334,13 @@ Some flags are required:
 
 These flags can be specified for each command:
 ```
-$ etcdctl member list \
---endpoints=10.0.1.101:2379 \
---cacert=etcd-certs/etcd-ca.pem \
---cert=etcd-certs/etcd-server.crt \
---key=etcd-certs/etcd-server.key \
---write-out=table member list
+etcdctl member list \
+  --endpoints=10.0.1.101:2379 \
+  --cacert=etcd-certs/etcd-ca.pem \
+  --cert=etcd-certs/etcd-server.crt \
+  --key=etcd-certs/etcd-server.key \
+  --write-out=table \
+  member list
 +------------------+---------+--------+-------------------------+-------------------------+------------+
 |        ID        | STATUS  |  NAME  |       PEER ADDRS        |      CLIENT ADDRS       | IS LEARNER |
 +------------------+---------+--------+-------------------------+-------------------------+------------+
@@ -347,7 +348,7 @@ $ etcdctl member list \
 +------------------+---------+--------+-------------------------+-------------------------+------------+
 ```
 
-Global flags can also be set with environment variables:
+Global flags can also be set as environment variables:
 ```
 export ETCDCTL_ENDPOINTS=10.0.1.101:2379
 export ETCDCTL_CACERT=etcd-certs/etcd-ca.pem
@@ -363,9 +364,26 @@ $ etcdctl member list --write-out=table
 | becbde068816b65f | started | etcd-1 | https://10.0.1.101:2380 | https://10.0.1.101:2379 |      false |
 +------------------+---------+--------+-------------------------+-------------------------+------------+
 ```
+
+How to find out those values ? Locate the manifest file for ETCD that includes it:
+```
+find /etc/kubernetes/manifests/  
+```
+```
+grep 2379 /etc/kubernetes/manifests/etcd.yaml  
+grep etcd /etc/kubernetes/manifests/etcd.yaml  
+```
+
+Manifest Variable      | ETCDTL Flag    | Environment Variable | Sample Value  
+---------------------- | -------------- | -------------------- | -----------  
+`--listen-client-urls` | `--endpoints`  | `ETCDCTL_ENDPOINTS`  | `https://127.0.0.1:2379`
+`--trusted-ca-file`    | `--cacert`     | `ETCDCTL_CACERT`     | `ca.crt`
+`--cert-file`          | `--cert`       | `ETCDCTL_CERT`       | `server.crt`
+`--key-file`           | `--key`        | `ETCDCTL_KEY`        | `server.key`
+  
 <br/>
 
-### Backing up Etcd
+### Backing up ETCD
 
 Basics
 ```
@@ -381,7 +399,7 @@ etcdctl snapshot save etcd_backup.db
 etcdctl snapshot status etcd_backup.db --write-out=table 
 ```
 
-### Restoring an Etcd backup 
+### Restoring an ETCD backup 
 
 This creates a temporary logical cluster to repopulate data
 
