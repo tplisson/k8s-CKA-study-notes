@@ -120,7 +120,7 @@ by William Boyd
 <br/>
 
 - Use [imperative commands](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#create) whenever possible:
-  - E.g. use: `kubectl create service -h`,
+  - E.g. use: `kubectl run -h`, `kubectl create deploy -h`, `kubectl expose -h`...
   - instead of: `kubectl apply -f <filename.yaml>`
 <br/>  
 
