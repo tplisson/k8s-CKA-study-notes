@@ -100,7 +100,7 @@ https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/
 <br/>
 
 ## ACG Training  
-- Great course from "A Cloud Guru":  
+- Great course from "a Cloud Guru":  
 https://learn.acloud.guru/course/certified-kubernetes-administrator/  
 by William Boyd
 
