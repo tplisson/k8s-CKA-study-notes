@@ -115,16 +115,34 @@ by William Boyd
     - Then go back to each of the flagged tasks afterwards.
 <br/>
 
+- Setup kubectl autocomplete 
+  - ```source <(kubectl completion bash)```
+  - ```alias k=kubectl```
+  - ```complete -F __start_kubectl k```
+<br/>  
+
+- Setup an shell variable to easily generate resource specs in YAML format:
+  - ```export do="--dry-run=client -o yaml"```
+  - then we can run:
+  - ```k run pod1 --image=nginx $do```
+<br/>  
+
 - Use `kubectl` [shortnames](https://kubernetes.io/docs/reference/kubectl/overview/#resource-types): 
   - `no` `po` `ns` `deploy` `svc` `ing` `ds` `netpol` `pv` `pvc` `sa` `cm` `ep` `sc` ...
 <br/>
 
 - Use [imperative commands](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#create) whenever possible:
-  - E.g. use: `kubectl run -h`, `kubectl create deploy -h`, `kubectl expose -h`...
-  - instead of: `kubectl apply -f <filename.yaml>`
+  - E.g. use: `k run -h`, `k create deploy -h`, `k expose -h`...
+  - instead of: `k apply -f <filename.yaml>`
 <br/>  
 
 - Use `kubectl explain` to [list the fields of supported API resources](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#explain)
+<br/>
 
+- Use `kubectl replace` to [replace an existing resource such as a Pod or Deployment with updated specs](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#replace)
+  - This saves you time compared to using `k delete` and `k apply -f <filename>`
+<br/>
 
+- Use `-w` (--watch=true) to  start watching updates to a particular object.
+  - `k get po -w` to watch your pods
 <br/>
