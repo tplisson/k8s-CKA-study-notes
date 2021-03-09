@@ -139,7 +139,7 @@ by William Boyd
 - Use `kubectl explain` to [list the fields of supported API resources](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#explain)
 <br/>
 
-- Use `kubectl replace` to [replace an existing resource](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#replace), such as a Pod or Deployment with updated specs:
+- Use `kubectl replace` to [replace an existing resource with some updated specs](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#replace):
   - This saves you time compared to using `k delete` and `k apply -f <filename>`
 <br/>
 
