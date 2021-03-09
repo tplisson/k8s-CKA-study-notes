@@ -3,46 +3,22 @@ This is my study guide for the Certified Kubernetes Associate (CKA) exam.
 https://www.cncf.io/certification/cka/  
 
 <p align="center">
-  <img src="https://www.cncf.io/wp-content/uploads/2020/08/logo_cka_whitetext-2-500x500.png">
+  <img src="CKA-logo.png">
 </p>
 <br/>
 
-**2Hrs | Cost $300 | [Online Exam](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/)**
+**2Hrs | Cost $300 | [Online Exam](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/)**  
 **K8s version 1.20 (Jan 22, 2021)**
  
 <br/>
 
-## CKA Lab Exercises
-
-### [My CKA Lab Exercises](CKA-Lab-Exercises.md)  
-https://github.com/tplisson/k8s-CKA-study-guide/blob/main/CKA-Lab-Exercises.md  
-
-
-### Other CKA Lab Exercises  
-- killer.sh_ 
-  https://killer.sh/cka
-  - not free but worth it
-  - 29.99€ for 2 CKA sessions of the same mock exam  
-  
-- Chad M. Crowell  
-https://github.com/chadmcrowell/CKA-Exercises
-
-- Ashutosh  
-https://github.com/ashutoshvct/k8s/tree/master/cka-exam
-
-- David-VTUK  
-https://github.com/David-VTUK/CKA-StudyGuide/
-
-- stretchcloud  
-https://github.com/stretchcloud/cka-lab-practice
-
-<br/>
 
 ## CKA Curriculum  
 
 Updated exam curriculum for v1.20  
 https://github.com/cncf/curriculum/
 
+<br/>
 
 **Domain**	| **Weight**
 ------- | -------------
@@ -99,10 +75,38 @@ https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/
 
 <br/>
 
-## ACG Training  
+## CKA Training  
 - Great course from "a Cloud Guru":  
 https://learn.acloud.guru/course/certified-kubernetes-administrator/  
 by William Boyd
+<br/>
+
+## CKA Lab Exercises
+
+### [My CKA Lab Exercises](CKA-Lab-Exercises.md)  
+https://github.com/tplisson/k8s-CKA-study-guide/blob/main/CKA-Lab-Exercises.md  
+
+
+### Other CKA Lab Exercises  
+- killer.sh_ 
+  https://killer.sh/cka
+  - not free but worth it
+  - 29.99€ for 2 CKA sessions of the same mock exam  
+  
+- Chad M. Crowell  
+https://github.com/chadmcrowell/CKA-Exercises
+
+- Ashutosh  
+https://github.com/ashutoshvct/k8s/tree/master/cka-exam
+
+- David-VTUK  
+https://github.com/David-VTUK/CKA-StudyGuide/
+
+- stretchcloud  
+https://github.com/stretchcloud/cka-lab-practice
+
+<br/>
+
 
 ## CKA Exam Tips
 - **Time management is paramount!**
