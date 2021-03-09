@@ -143,6 +143,6 @@ by William Boyd
   - This saves you time compared to using `k delete` and `k apply -f <filename>`
 <br/>
 
-- Use `-w` (--watch=true) to  start watching updates to a particular object.
+- Use `-w` (i.e. `--watch=true`) to  start watching updates to a particular object.
   - `k get po -w` to watch your pods
 <br/>
