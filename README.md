@@ -109,7 +109,7 @@ https://github.com/stretchcloud/cka-lab-practice
 
 
 ## CKA Exam Tips
-- **Time management is paramount!**
+- **Time management is key!**
   - You have 15-20 performance-based tasks to perform in 2 hours, so an average of 6-8 min per task. Some tasks are easy but some others will take much more time.
   - Get all questions done: 
     - Make sure to go through all 15-20 tasks
