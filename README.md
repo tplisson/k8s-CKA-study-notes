@@ -137,7 +137,6 @@ https://github.com/stretchcloud/cka-lab-practice
   - ```set ts=2``` or ```set tabstop=2``` (the number of spaces that a tab equates to)
   - ```set sts=2``` or ```set softtabstop=2``` (the number of spaces to use when expanding tabs)
   - ```set sw=2``` or ```set shiftwidth=2``` (the number of spaces to use when indenting or de-indenting a line)
-
   ```
   # .vimrc
   set et
