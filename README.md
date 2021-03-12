@@ -145,6 +145,7 @@ https://github.com/stretchcloud/cka-lab-practice
   set sts=2
   set sw=2
   ```  
+<br/>
 
 - Use `kubectl` [shortnames](https://kubernetes.io/docs/reference/kubectl/overview/#resource-types): 
   - `no` `po` `ns` `deploy` `svc` `ing` `ds` `netpol` `pv` `pvc` `sa` `cm` `ep` `sc` ...
