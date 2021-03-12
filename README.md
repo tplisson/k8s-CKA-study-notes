@@ -131,6 +131,22 @@ https://github.com/stretchcloud/cka-lab-practice
   - ```k run pod1 --image=nginx $do```
 <br/>  
 
+- Setup VIM for yaml by adding these lines to the `~/.vimrc` configuration file:
+  - ```set et``` or ```set expandtab``` (spaces instead of tabs)
+  - ```set si``` or ```set smartindent`` (automatic and smart indentation)
+  - ```set ts=2``` or ```set tabstop=2``` (the number of spaces that a tab equates to)
+  - ```set sts=2``` or ```set softtabstop=2``` (the number of spaces to use when expanding tabs)
+  - ```set sw=2``` or ```set shiftwidth=2``` (the number of spaces to use when indenting or de-indenting a line)
+
+  ```
+  # .vimrc
+  set et
+  set si
+  set ts=2
+  set sts=2
+  set sw=2
+  ```  
+
 - Use `kubectl` [shortnames](https://kubernetes.io/docs/reference/kubectl/overview/#resource-types): 
   - `no` `po` `ns` `deploy` `svc` `ing` `ds` `netpol` `pv` `pvc` `sa` `cm` `ep` `sc` ...
 <br/>
