@@ -735,103 +735,14 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 
 </p>
 </details>
+
 <br/>
-
-
 
 ### 2.3. Know how to scale applications
 
-#### Excercise 1 - 
-<details><summary>show solution</summary>
-<p>
-
-```
-
-```
-</p>
-</details>
-<br/>
-
-#### Excercise 2 - 
-<details><summary>show solution</summary>
-<p>
-
-```
-
-```
-</p>
-</details>
-<br/>
-
-
 ### 2.4. Understand the primitives used to create robust, self-healing, application deployments	
-
-#### Excercise 1 - 
-<details><summary>show solution</summary>
-<p>
-
-```
-
-```
-</p>
-</details>
-<br/>
-
-#### Excercise 2 - 
-<details><summary>show solution</summary>
-<p>
-
-```
-
-```
-</p>
-</details>
-<br/>
 
 ### 2.5. Understand how resource limits can affect Pod scheduling	
 
-#### Excercise 1 - 
-<details><summary>show solution</summary>
-<p>
-
-```
-
-```
-</p>
-</details>
-<br/>
-
-#### Excercise 2 - 
-<details><summary>show solution</summary>
-<p>
-
-```
-
-```
-</p>
-</details>
-<br/>
-
 ###  2.6. Awareness of manifest management and common templating tools
 
-#### Excercise 1 - 
-<details><summary>show solution</summary>
-<p>
-
-```
-
-```
-</p>
-</details>
-<br/>
-
-#### Excercise 2 - 
-<details><summary>show solution</summary>
-<p>
-
-```
-
-```
-</p>
-</details>
-<br/>
