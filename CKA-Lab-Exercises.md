@@ -265,6 +265,7 @@ If it fails, you'd get this:
 
 </p>
 </details>
+
 <br/>
 
 
@@ -316,6 +317,7 @@ kubectl get nodes
 ```
 </p>
 </details>
+
 <br/>
 
 ## 2. Workloads & Scheduling	| 15%  
@@ -438,6 +440,7 @@ kubectl get deploy nginx -o wide
 
 </p>
 </details>
+
 <br/>
 
 
@@ -456,6 +459,10 @@ Imperative method:
 ```
 kubectl create secret generic lab --from-literal=username=lab --from-literal=password=lab123
 ```
+</p>
+</details>
+
+<br/>
 
 #### Excercise 2 - Create Secrets and use it in a Pod's environment
 Create a simple opaque Secret to store a username `lab` and a password `lab123`.
@@ -737,6 +744,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 #### Excercise 1 - 
 <details><summary>show solution</summary>
 <p>
+
 ```
 
 ```
@@ -747,6 +755,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 #### Excercise 2 - 
 <details><summary>show solution</summary>
 <p>
+
 ```
 
 ```
@@ -760,6 +769,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 #### Excercise 1 - 
 <details><summary>show solution</summary>
 <p>
+
 ```
 
 ```
@@ -770,6 +780,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 #### Excercise 2 - 
 <details><summary>show solution</summary>
 <p>
+
 ```
 
 ```
@@ -782,6 +793,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 #### Excercise 1 - 
 <details><summary>show solution</summary>
 <p>
+
 ```
 
 ```
@@ -792,6 +804,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 #### Excercise 2 - 
 <details><summary>show solution</summary>
 <p>
+
 ```
 
 ```
@@ -804,6 +817,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 #### Excercise 1 - 
 <details><summary>show solution</summary>
 <p>
+
 ```
 
 ```
@@ -814,6 +828,7 @@ kubectl run curl --image=nginx -i --rm -- curl <any-node-ip>:30080
 #### Excercise 2 - 
 <details><summary>show solution</summary>
 <p>
+
 ```
 
 ```
