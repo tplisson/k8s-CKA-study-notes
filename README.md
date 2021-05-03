@@ -7,6 +7,7 @@ https://www.cncf.io/certification/cka/
 </p>
 <br/>
 
+
 **2Hrs | Cost $300 | [Online Exam](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/)**  
 **K8s version 1.20 (Jan 22, 2021)**
  
