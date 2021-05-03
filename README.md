@@ -12,7 +12,6 @@ https://www.cncf.io/certification/cka/
  
 <br/>
 
-
 ## CKA Curriculum  
 
 Updated exam curriculum for v1.20  
