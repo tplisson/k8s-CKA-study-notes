@@ -4,7 +4,7 @@ Domain	| Weight
 ------- | -------------
 [**1. Cluster Architecture, Installation & Configuration**](CKA-1-Cluster-Architecture-Installation.md#1-cluster-architecture-installation--configuration-25)	| 25%  
 [1.1. Manage role based access control (RBAC)](CKA-1-Cluster-Architecture-Installation.md#11-manage-role-based-access-control-rbac) |  
-[1.2. Use Kubeadm to install a basic cluster](CKA-1-Cluster-Architecture-Installation.md#11-use-kubeadm-to-install-a-basic-cluster) |  
+[1.2. Use Kubeadm to install a basic cluster](CKA-1-Cluster-Architecture-Installation.md#12-use-kubeadm-to-install-a-basic-cluster) |  
 [1.3. Manage a highly-available Kubernetes cluster](CKA-1-Cluster-Architecture-Installation.md#13-manage-a-highly-available-kubernetes-cluster) |  
 [1.4. Provision underlying infrastructure to deploy a Kubernetes cluster](CKA-1-Cluster-Architecture-Installation.md#14-provision-underlying-infrastructure-to-deploy-a-kubernetes-cluster) |  
 [1.5. Perform a version upgrade on a Kubernetes cluster using Kubeadm](CKA-1-Cluster-Architecture-Installation.md#15-perform-a-version-upgrade-on-a-kubernetes-cluster-using-kubeadm) |  
