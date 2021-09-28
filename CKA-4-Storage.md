@@ -200,7 +200,7 @@ spec:
 ## 4.3. Understand persistent volume claims primitive  
 https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reserving-a-persistentvolume  
 
-P`ersistentVolumeClaim` object is a user’s request with attributes. It is bound to a `PersistentVolume` based on a matching `StorageClass`.
+`PersistentVolumeClaim` object is a user’s request with attributes. It is bound to a `PersistentVolume` based on a matching `StorageClass`.
 
 ```yaml
 apiVersion: v1
