@@ -3,10 +3,10 @@
 Domain	| Weight
 ------- | -------------
 **4. Storage** | 10%  
-[4.1. Understand storage classes, persistent volumes](CKA-4-Storage.md.md#41-understand-storage-classes-persistent-volumes) |  
-[4.2. Understand volume mode, access modes and reclaim policies for volumes](CKA-4-Storage.md.md#42-understand-volume-mode-access-modes-and-reclaim-policies-for-volumes) |  
-[4.3. Understand persistent volume claims primitive](CKA-4-Storage.md.md#43-understand-persistent-volume-claims-primitive) |  
-[4.4 Know how to configure applications with persistent storage](CKA-4-Storage.md.md#44-know-how-to-configure-applications-with-persistent-storage) |   
+[4.1. Understand storage classes, persistent volumes](CKA-4-Storage.md#41-understand-storage-classes-persistent-volumes) |  
+[4.2. Understand volume mode, access modes and reclaim policies for volumes](CKA-4-Storage.md#42-understand-volume-mode-access-modes-and-reclaim-policies-for-volumes) |  
+[4.3. Understand persistent volume claims primitive](CKA-4-Storage.md#43-understand-persistent-volume-claims-primitive) |  
+[4.4 Know how to configure applications with persistent storage](CKA-4-Storage.md#44-know-how-to-configure-applications-with-persistent-storage) |   
 
 
 
