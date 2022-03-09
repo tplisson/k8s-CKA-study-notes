@@ -8,14 +8,14 @@ https://www.cncf.io/certification/cka/
 <br/>
 
 
-**2Hrs | Cost $300 | [Online Exam](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/)**  
-**K8s version 1.20 (Jan 22, 2021)**
+**2Hrs | Cost $375 | [Online Exam](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/)**  
+**K8s version 1.22 (Oct 13, 2021)**
  
 <br/>
 
 ## CKA Curriculum  
 
-Updated exam curriculum for v1.20  
+Updated exam curriculum for v1.22  
 https://github.com/cncf/curriculum/
 
 <br/>
@@ -69,8 +69,8 @@ https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 - `kubectl` Command Reference
 https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands  
   
-- One-page API Reference for Kubernetes v1.20  
-https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/  
+- One-page API Reference for Kubernetes v1.22  
+https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.22/  
   
 
 <br/>
