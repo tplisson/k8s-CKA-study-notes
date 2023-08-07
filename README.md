@@ -1,4 +1,4 @@
-# Certified Kubernetes Associate (CKA) Study Guide  
+# Certified Kubernetes Associate (CKA) Study Notes  
 This is my study guide for the Certified Kubernetes Associate (CKA) exam.  
 https://www.cncf.io/certification/cka/  
 
